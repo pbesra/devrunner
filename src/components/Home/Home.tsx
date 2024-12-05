@@ -4,9 +4,8 @@ import AppDrawer from "components/AppDrawer/AppDrawer";
 const Home = () => {
 	return (
 		<>
-			{/* <Header /> */}
-			<AppDrawer />
-			{/* <Main /> */}
+			<Header />
+			<Main />
 		</>
 	);
 };

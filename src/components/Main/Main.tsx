@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 const Main = () => {
 	return (
 		<>
-			<Box sx={{ margin: 2 }}>
+			<Box sx={{ marginTop: 12, marginLeft: 4, marginRight: 4 }}>
 				Facebook is a social media and social networking service owned
 				by American technology conglomerate Meta. Created in 2004 by
 				Mark Zuckerberg with four other Harvard College students and

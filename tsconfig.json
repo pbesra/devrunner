@@ -23,6 +23,7 @@
     "paths": {
       "@hooks/*": ["custom-hooks/*"],
       "@utils/*":["utils/*"],
+      "@appcontext/*":["app-context/*"],
     }
   },
   "include": [

@@ -21,9 +21,9 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "@hooks/*": ["custom-hooks/*"],
-      "@utils/*":["utils/*"],
-      "@appcontext/*":["app-context/*"],
+      "@hooks/*": ["apphooks/*"],
+      "@utils/*": ["utils/*"],
+      "@appcontext/*": ["app-context/*"]
     }
   },
   "include": [

@@ -16,6 +16,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
+const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+
 const Search = styled("div")(({ theme }) => ({
 	position: "relative",
 	borderRadius: theme.shape.borderRadius,
@@ -56,11 +58,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	},
 }));
 
-type HeaderProps = {
-	onClickHomeIcon?: () => void;
-};
-
-const Header = ({ onClickHomeIcon }: HeaderProps) => {
+const Header = () => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
 		React.useState<null | HTMLElement>(null);
@@ -166,7 +164,11 @@ const Header = ({ onClickHomeIcon }: HeaderProps) => {
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar
-				sx={{ backgroundColor: "white", boxShadow: "none" }}
+				sx={{
+					backgroundColor: "white",
+					boxShadow: "none",
+					borderBottom: "0.5px solid #f1f1f1",
+				}}
 				position="fixed"
 			>
 				<Toolbar>
@@ -175,10 +177,9 @@ const Header = ({ onClickHomeIcon }: HeaderProps) => {
 						edge="start"
 						color="inherit"
 						aria-label="open drawer"
-						sx={{ mr: 2, color: "#0082ba" }}
-						onClick={onClickHomeIcon}
+						sx={{ mr: 2 }}
 					>
-						<MenuIcon />
+						<MenuIcon className="home-icon" />
 					</IconButton>
 					<Typography
 						variant="h6"
@@ -188,10 +189,10 @@ const Header = ({ onClickHomeIcon }: HeaderProps) => {
 							display: {
 								xs: "none",
 								sm: "block",
-								color: "#0082ba",
 								fontWeight: "bold",
 							},
 						}}
+						className="home-icon"
 					>
 						Devrunner
 					</Typography>
@@ -204,9 +205,9 @@ const Header = ({ onClickHomeIcon }: HeaderProps) => {
 							inputProps={{ "aria-label": "search" }}
 						/>
 					</Search> */}
-					{/* <Box sx={{ flexGrow: 1 }} />
+					<Box sx={{ flexGrow: 1 }} />
 					<Box sx={{ display: { xs: "none", md: "flex" } }}>
-						<IconButton
+						{/* <IconButton
 							size="large"
 							aria-label="show 4 new mails"
 							color="inherit"
@@ -214,8 +215,8 @@ const Header = ({ onClickHomeIcon }: HeaderProps) => {
 							<Badge badgeContent={4} color="error">
 								<MailIcon />
 							</Badge>
-						</IconButton>
-						<IconButton
+						</IconButton> */}
+						{/* <IconButton
 							size="large"
 							aria-label="show 17 new notifications"
 							color="inherit"
@@ -223,8 +224,8 @@ const Header = ({ onClickHomeIcon }: HeaderProps) => {
 							<Badge badgeContent={17} color="error">
 								<NotificationsIcon />
 							</Badge>
-						</IconButton>
-						<IconButton
+						</IconButton> */}
+						{/* <IconButton
 							size="large"
 							edge="end"
 							aria-label="account of current user"
@@ -234,9 +235,9 @@ const Header = ({ onClickHomeIcon }: HeaderProps) => {
 							color="inherit"
 						>
 							<AccountCircle />
-						</IconButton>
+						</IconButton> */}
 					</Box>
-					<Box sx={{ display: { xs: "flex", md: "none" } }}>
+					{/* <Box sx={{ display: { xs: "flex", md: "none" } }}>
 						<IconButton
 							size="large"
 							aria-label="show more"
@@ -252,6 +253,7 @@ const Header = ({ onClickHomeIcon }: HeaderProps) => {
 			</AppBar>
 			{renderMobileMenu}
 			{renderMenu}
+			<Offset />
 		</Box>
 	);
 };

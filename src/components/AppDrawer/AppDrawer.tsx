@@ -35,27 +35,7 @@ const AppDrawer = ({
 	state,
 	toggleDrawer,
 }: AppDrawerProps) => {
-	// const [state, setState] = React.useState({
-	// 	top: false,
-	// 	left: false,
-	// 	bottom: false,
-	// 	right: false,
-	// });
-
-	// const toggleDrawer = (anchor: Anchor, open: boolean) => {
-	// 	return (event: React.KeyboardEvent | React.MouseEvent) => {
-	// 		if (
-	// 			event &&
-	// 			event.type === "keydown" &&
-	// 			((event as React.KeyboardEvent).key === "Tab" ||
-	// 				(event as React.KeyboardEvent).key === "Shift")
-	// 		) {
-	// 			return;
-	// 		}
-
-	// 		setState({ ...state, [anchor]: open });
-	// 	};
-	// };
+	console.log("state", state);
 
 	const list = (anchor: Anchor) => (
 		<Box
@@ -63,8 +43,8 @@ const AppDrawer = ({
 				width: anchor === "top" || anchor === "bottom" ? "auto" : 250,
 			}}
 			role="presentation"
-			onClick={toggleDrawer(anchor, false)}
-			onKeyDown={toggleDrawer(anchor, false)}
+			onClick={toggleDrawer(anchor, true)}
+			onKeyDown={toggleDrawer(anchor, true)}
 		>
 			<List>
 				{drawerItems.map((text, index) => (
@@ -82,17 +62,18 @@ const AppDrawer = ({
 	);
 
 	return (
-		<div>
+		<div id="left-drawer">
 			{(["left", "right", "top", "bottom"] as const).map((anchor) => (
 				<React.Fragment key={anchor}>
-					<Button onClick={toggleDrawer(anchor, true)}>
+					{/* <Button onClick={toggleDrawer(anchor, true)}>
 						{anchor}
-					</Button>
+					</Button> */}
 					<SwipeableDrawer
 						anchor={anchor}
 						open={state[anchor]}
 						onClose={toggleDrawer(anchor, false)}
 						onOpen={toggleDrawer(anchor, true)}
+						id="swipeableDrawer-id"
 					>
 						{list(anchor)}
 					</SwipeableDrawer>

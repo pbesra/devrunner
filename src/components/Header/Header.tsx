@@ -58,7 +58,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	},
 }));
 
-const Header = () => {
+type HeaderProps = {
+	onClickHomeIcon: () => void;
+};
+
+const Header = ({ onClickHomeIcon }: HeaderProps) => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
 		React.useState<null | HTMLElement>(null);
@@ -178,6 +182,7 @@ const Header = () => {
 						color="inherit"
 						aria-label="open drawer"
 						sx={{ mr: 2 }}
+						onClick={onClickHomeIcon}
 					>
 						<MenuIcon className="home-icon" />
 					</IconButton>

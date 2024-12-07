@@ -14,9 +14,15 @@ import MailIcon from "@mui/icons-material/Mail";
 type Anchor = "top" | "left" | "bottom" | "right";
 type AppDrawerProps = {
 	direction?: string;
+	isOpen?: boolean;
+	drawerItems?: string[];
 };
 
-const AppDrawer = ({ direction }: AppDrawerProps) => {
+const AppDrawer = ({
+	direction,
+	isOpen = false,
+	drawerItems = ["All mail", "Trash", "Spam"],
+}: AppDrawerProps) => {
 	const [state, setState] = React.useState({
 		top: false,
 		left: false,
@@ -24,9 +30,8 @@ const AppDrawer = ({ direction }: AppDrawerProps) => {
 		right: false,
 	});
 
-	const toggleDrawer =
-		(anchor: Anchor, open: boolean) =>
-		(event: React.KeyboardEvent | React.MouseEvent) => {
+	const toggleDrawer = (anchor: Anchor, open: boolean) => {
+		return (event: React.KeyboardEvent | React.MouseEvent) => {
 			if (
 				event &&
 				event.type === "keydown" &&
@@ -38,6 +43,7 @@ const AppDrawer = ({ direction }: AppDrawerProps) => {
 
 			setState({ ...state, [anchor]: open });
 		};
+	};
 
 	const list = (anchor: Anchor) => (
 		<Box
@@ -49,26 +55,7 @@ const AppDrawer = ({ direction }: AppDrawerProps) => {
 			onKeyDown={toggleDrawer(anchor, false)}
 		>
 			<List>
-				{["Inbox", "Starred", "Send email", "Drafts"].map(
-					(text, index) => (
-						<ListItem key={text} disablePadding>
-							<ListItemButton>
-								<ListItemIcon>
-									{index % 2 === 0 ? (
-										<InboxIcon />
-									) : (
-										<MailIcon />
-									)}
-								</ListItemIcon>
-								<ListItemText primary={text} />
-							</ListItemButton>
-						</ListItem>
-					)
-				)}
-			</List>
-			<Divider />
-			<List>
-				{["All mail", "Trash", "Spam"].map((text, index) => (
+				{drawerItems.map((text, index) => (
 					<ListItem key={text} disablePadding>
 						<ListItemButton>
 							<ListItemIcon>

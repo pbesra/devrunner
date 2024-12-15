@@ -4,6 +4,7 @@ import AppDrawer from "components/AppDrawer/AppDrawer";
 import Header from "components/Header/Header";
 import Main from "components/Main/Main";
 import { useCallback } from "react";
+import transformers from "resources/transformers/transfomers";
 
 const MainBody = () => {
 	return (

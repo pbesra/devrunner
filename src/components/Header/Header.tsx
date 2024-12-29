@@ -201,11 +201,12 @@ const Header = ({ onClickHomeIcon }: HeaderProps) => {
 					>
 						Devrunner
 					</Typography>
-					{/* <Search>
+					{/* <Search sx={{ border: "1px solid red" }}>
 						<SearchIconWrapper>
 							<SearchIcon />
 						</SearchIconWrapper>
 						<StyledInputBase
+							sx={{ border: "1px solid black" }}
 							placeholder="Search…"
 							inputProps={{ "aria-label": "search" }}
 						/>

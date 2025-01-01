@@ -23,7 +23,7 @@
     "paths": {
       "@hooks/*": ["apphooks/*"],
       "@utils/*": ["utils/*"],
-      "@appcontext/*": ["app-context/*"]
+      "@appcontext/*": ["app-context/*"],
     }
   },
   "include": [

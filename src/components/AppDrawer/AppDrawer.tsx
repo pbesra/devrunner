@@ -1,16 +1,10 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Button from "@mui/material/Button";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { Anchor } from "@mui/icons-material";
 import { TransformerProp } from "resources/transformers/transfomers";
 import { Link } from "react-router";
 
@@ -29,6 +23,7 @@ type AppDrawerProps = {
 		anchor: Anchor,
 		open: boolean
 	) => (event: React.KeyboardEvent | React.MouseEvent) => void;
+	DrawerLogo?: React.ComponentType;
 };
 
 const AppDrawer = ({
@@ -36,6 +31,7 @@ const AppDrawer = ({
 	drawerItems = [],
 	state,
 	toggleDrawer,
+	DrawerLogo,
 }: AppDrawerProps) => {
 	console.log("state", state);
 
@@ -51,17 +47,44 @@ const AppDrawer = ({
 			<List>
 				{drawerItems.map((item, index) =>
 					item.endpoint ? (
-						<Link key={item.name} to={`/${item.endpoint}`}>
-							<ListItem key={item.name ?? index} disablePadding>
-								<ListItemButton>
-									<ListItemText primary={item.label} />
-								</ListItemButton>
+						<Link
+							style={{
+								textDecoration: "none",
+								color: "#4b4b4b",
+							}}
+							key={item.name}
+							to={`/${item.endpoint}`}
+						>
+							<ListItem
+								sx={{
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+									textAlign: "left",
+									paddingLeft: 4,
+								}}
+								key={item.name ?? index}
+								disablePadding
+							>
+								<ListItemText
+									primaryTypographyProps={{
+										fontSize: "14px",
+									}}
+									primary={item.label}
+								/>
 							</ListItem>
 						</Link>
 					) : (
 						<ListItem key={item.name ?? index} disablePadding>
 							<ListItemButton>
-								<ListItemText primary={item.label} />
+								<ListItemText
+									sx={{
+										typography: {
+											fontSize: "6px",
+										},
+									}}
+									primary={item.label}
+								/>
 							</ListItemButton>
 						</ListItem>
 					)
@@ -82,8 +105,12 @@ const AppDrawer = ({
 						open={state[anchor]}
 						onClose={toggleDrawer(anchor, false)}
 						onOpen={toggleDrawer(anchor, true)}
-						id="swipeableDrawer-id"
 					>
+						{DrawerLogo && (
+							<Box>
+								<DrawerLogo />
+							</Box>
+						)}
 						{list(anchor)}
 					</SwipeableDrawer>
 				</React.Fragment>

@@ -1,6 +1,6 @@
 import XmlXslt from "components/Transformers/XmlXslt/XmlXslt";
 
-type TransformerProp={
+export type TransformerProp={
     label: string;
     name: string
     endpoint: string;

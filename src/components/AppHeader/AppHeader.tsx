@@ -2,6 +2,7 @@ import { useAppDrawer } from "@hooks/index";
 import AppDrawer from "components/AppDrawer/AppDrawer";
 import Header from "components/Header/Header";
 import { useCallback } from "react";
+import transformers from "resources/transformers/transfomers";
 
 const AppHeader = () => {
 	const { state, toggleDrawer, setState } = useAppDrawer({ anchor: "left" });
@@ -13,7 +14,7 @@ const AppHeader = () => {
 		<>
 			<Header onClickHomeIcon={onClickHomeIcon} />
 			<AppDrawer
-				drawerItems={items}
+				drawerItems={transformers}
 				state={state}
 				toggleDrawer={toggleDrawer}
 			/>

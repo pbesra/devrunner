@@ -11,6 +11,8 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { Anchor } from "@mui/icons-material";
+import { TransformerProp } from "resources/transformers/transfomers";
+import { Link } from "react-router";
 
 export type Anchor = "top" | "left" | "bottom" | "right";
 export type DrawerStateProps = {
@@ -20,7 +22,7 @@ export type DrawerStateProps = {
 	right: boolean;
 };
 type AppDrawerProps = {
-	drawerItems?: string[];
+	drawerItems?: TransformerProp[];
 	anchor?: Anchor;
 	state: { top: boolean; left: boolean; right: boolean; bottom: boolean };
 	toggleDrawer: (
@@ -31,7 +33,7 @@ type AppDrawerProps = {
 
 const AppDrawer = ({
 	anchor = "left",
-	drawerItems = ["All mail", "Trash", "Spam"],
+	drawerItems = [],
 	state,
 	toggleDrawer,
 }: AppDrawerProps) => {
@@ -47,16 +49,23 @@ const AppDrawer = ({
 			onKeyDown={toggleDrawer(anchor, true)}
 		>
 			<List>
-				{drawerItems.map((text, index) => (
-					<ListItem key={text} disablePadding>
-						<ListItemButton>
-							<ListItemIcon>
-								{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-							</ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItemButton>
-					</ListItem>
-				))}
+				{drawerItems.map((item, index) =>
+					item.endpoint ? (
+						<Link key={item.name} to={`/${item.endpoint}`}>
+							<ListItem key={item.name ?? index} disablePadding>
+								<ListItemButton>
+									<ListItemText primary={item.label} />
+								</ListItemButton>
+							</ListItem>
+						</Link>
+					) : (
+						<ListItem key={item.name ?? index} disablePadding>
+							<ListItemButton>
+								<ListItemText primary={item.label} />
+							</ListItemButton>
+						</ListItem>
+					)
+				)}
 			</List>
 		</Box>
 	);

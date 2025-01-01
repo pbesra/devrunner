@@ -13,7 +13,7 @@ const AppRouter = () => {
 				{transformers.map((x) => (
 					<Route
 						key={x.name}
-						path={x.endpoint}
+						path={`/${x.endpoint}`}
 						element={<x.component />}
 					/>
 				))}

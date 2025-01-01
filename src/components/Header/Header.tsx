@@ -15,6 +15,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import { useNavigate } from "react-router";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
@@ -68,6 +69,7 @@ const Header = ({ onClickHomeIcon }: HeaderProps) => {
 
 	const isMenuOpen = Boolean(anchorEl);
 	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+	const navigate = useNavigate();
 
 	const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -84,6 +86,9 @@ const Header = ({ onClickHomeIcon }: HeaderProps) => {
 
 	const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
 		setMobileMoreAnchorEl(event.currentTarget);
+	};
+	const onClickHomeLogo = () => {
+		navigate("/");
 	};
 
 	const menuId = "primary-search-account-menu";
@@ -195,8 +200,10 @@ const Header = ({ onClickHomeIcon }: HeaderProps) => {
 								sm: "block",
 								fontWeight: "bold",
 							},
+							cursor: "pointer",
 						}}
 						className="home-icon"
+						onClick={onClickHomeLogo}
 					>
 						Devrunner
 					</Typography>

@@ -3,28 +3,20 @@ import Box from "@mui/material/Box";
 import { nanoid } from "nanoid";
 import { useState, useRef } from "react";
 import * as monaco from "monaco-editor";
+import { NextGenEditorProps } from "./NextGenEditor";
 
 const MonacoEditor = ({
 	label = "// Comment here",
 	language = "javascript",
-	height = "50vh",
+	height = "75vh",
 	readonly = false,
 	handleOnChangeInputText,
 	value = "",
 	identifier = nanoid(8),
 	handleEditorDidMount,
-}: {
-	label?: string;
-	language?: string;
-	height?: string;
-	readonly?: boolean;
-	handleOnChangeInputText?: (value: string) => void;
-	value?: string | undefined;
-	identifier?: string | number | undefined;
-	handleEditorDidMount?: (
-		editor: monaco.editor.IStandaloneCodeEditor
-	) => void;
-}) => {
+	name,
+	border,
+}: NextGenEditorProps) => {
 	const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
 	const onChangeValue = (value: string | undefined, event: any) => {
 		handleOnChangeInputText?.(editorRef?.current?.getValue() ?? "");
@@ -37,7 +29,7 @@ const MonacoEditor = ({
 		handleEditorDidMount?.(editor);
 	}
 	return (
-		<Box sx={{ p: 2 }}>
+		<Box sx={{ p: 2, border: border ?? "1px solid #e0e0e0", margin: 2 }}>
 			<Editor
 				height={height}
 				defaultLanguage={language}

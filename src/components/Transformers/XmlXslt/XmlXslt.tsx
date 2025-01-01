@@ -1,4 +1,6 @@
+import MonacoEditor from "components/NextGenEditor/MonacoEditor";
+import NextGenEditor from "components/NextGenEditor/NextGenEditor";
 const XmlXslt = () => {
-	return <>Xml xslt</>;
+	return <NextGenEditor name="monaco" />;
 };
 export default XmlXslt;

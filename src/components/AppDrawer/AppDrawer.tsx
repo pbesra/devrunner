@@ -24,6 +24,7 @@ type AppDrawerProps = {
 		open: boolean
 	) => (event: React.KeyboardEvent | React.MouseEvent) => void;
 	DrawerLogo?: React.ComponentType;
+	onClickAppDrawerItem?: (name: string) => void;
 };
 
 const AppDrawer = ({
@@ -32,6 +33,7 @@ const AppDrawer = ({
 	state,
 	toggleDrawer,
 	DrawerLogo,
+	onClickAppDrawerItem,
 }: AppDrawerProps) => {
 	console.log("state", state);
 
@@ -41,7 +43,7 @@ const AppDrawer = ({
 				width: anchor === "top" || anchor === "bottom" ? "auto" : 250,
 			}}
 			role="presentation"
-			onClick={toggleDrawer(anchor, true)}
+			onClick={toggleDrawer(anchor, false)}
 			onKeyDown={toggleDrawer(anchor, true)}
 		>
 			<List>
@@ -54,6 +56,11 @@ const AppDrawer = ({
 							}}
 							key={item.name}
 							to={`/${item.endpoint}`}
+							onClick={() =>
+								onClickAppDrawerItem
+									? onClickAppDrawerItem(item.name)
+									: null
+							}
 						>
 							<ListItem
 								sx={{

@@ -1,4 +1,5 @@
 import XmlXslt from "components/Transformers/XmlXslt/XmlXslt";
+import TextCompare from "components/Transformers/TextCompare/TextCompare";
 
 export type TransformerProp={
     label: string;
@@ -14,17 +15,18 @@ const transformers: TransformerProp[]=[
         endpoint:'xml-xslt'
     },
     {
+        name: 'text-compare',
+        label:'Text Compare',
+        component: TextCompare,
+        endpoint:'text-compare'
+    },
+    {
         name: 'json-web-token',
         label:'JSON Web Token',
         component: XmlXslt,
         endpoint:'json-web-token'
     },
-    {
-        name: 'text-compare',
-        label:'Text Compare',
-        component: XmlXslt,
-        endpoint:'text-compare'
-    },
+    
     {
         name: 'xpath',
         label:'X Path',

@@ -8,10 +8,15 @@ const AppHeader = () => {
 	const onClickHomeIcon = useCallback(() => {
 		setState({ ...state, left: true });
 	}, []);
+	var items = ["XSLT", "Text Compare", "XML to JSON"];
 	return (
 		<>
 			<Header onClickHomeIcon={onClickHomeIcon} />
-			<AppDrawer state={state} toggleDrawer={toggleDrawer} />
+			<AppDrawer
+				drawerItems={items}
+				state={state}
+				toggleDrawer={toggleDrawer}
+			/>
 		</>
 	);
 };

@@ -1,6 +1,21 @@
 import TextField from "@mui/material/TextField";
 import { NextGenEditorProps } from "../NextGenEditor/NextGenEditor";
+import { useState, useEffect } from "react";
+
 const MuiTextEditor = (props: NextGenEditorProps) => {
+	const [textValue, setTextValue] = useState(props.value);
+
+	useEffect(() => {
+		setTextValue(props.value);
+	}, [props.value]);
+
+	const changeTextValue = (inputValue: string) => {
+		setTextValue(inputValue); // Update local state
+		if (props?.handleOnChangeInputText) {
+			props?.handleOnChangeInputText(inputValue);
+		}
+	};
+
 	return (
 		<TextField
 			multiline
@@ -14,23 +29,18 @@ const MuiTextEditor = (props: NextGenEditorProps) => {
 				},
 			}}
 			rows={18}
-			maxRows={36}
 			label={props.label}
-			defaultValue={`<?xml version="1.0"?>
-<catalog>
-   <book id="bk112">
-      <author>Galos, Mike</author>
-      <title>Visual Studio 7: A Comprehensive Guide</title>
-      <genre>Computer</genre>
-      <price>49.95</price>
-      <publish_date>2001-04-16</publish_date>
-      <description>Microsoft Visual Studio 7 is explored in depth,
-      looking at how Visual Basic, Visual C++, C#, and ASP+ are 
-      integrated into a comprehensive development 
-      environment.</description>
-   </book>
-</catalog>`}
+			value={textValue} // Reflect the current state in TextField
+			onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+				changeTextValue(event.target.value)
+			}
+			slotProps={{
+				input: {
+					readOnly: props.readonly,
+				},
+			}}
 		/>
 	);
 };
+
 export default MuiTextEditor;

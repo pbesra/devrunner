@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { nanoid } from "nanoid";
 import { useState, useRef } from "react";
 import * as monaco from "monaco-editor";
-import { NextGenEditorProps } from "./NextGenEditor";
+import { NextGenEditorProps } from "../NextGenEditor/NextGenEditor";
 
 const MonacoEditor = ({
 	label = "// Comment here",

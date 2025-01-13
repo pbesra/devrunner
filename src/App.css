@@ -42,3 +42,6 @@
 .drawer-text{
   font-size: 8px;
 }
+.main-component{
+  border: 1px solid red;
+}

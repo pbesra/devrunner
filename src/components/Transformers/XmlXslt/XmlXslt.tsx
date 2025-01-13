@@ -1,15 +1,18 @@
-import { Box } from "@mui/material";
-import MonacoEditor from "components/NextGenEditor/MonacoEditor";
-import NextGenEditor from "components/NextGenEditor/NextGenEditor";
+import Box from "@mui/material/Box";
+import NextGenEditor from "components/NextGenEditor/NextGenEditor/NextGenEditor";
+import TransformerWrapper from "../TransformerWrapper/TransformerWrapper";
 const XmlXslt = () => {
+	const components = [
+		<NextGenEditor label="xml" name="mui" />,
+		<NextGenEditor label="xsl" name="mui" />,
+		<NextGenEditor label="result" name="mui" />,
+	];
 	return (
 		<>
-			<Box>
-				XSLT Transformation
-				<Box>
-					<NextGenEditor name="monaco" />
-				</Box>
-			</Box>
+			<TransformerWrapper
+				title="XSLT Transformation"
+				components={components}
+			/>
 		</>
 	);
 };

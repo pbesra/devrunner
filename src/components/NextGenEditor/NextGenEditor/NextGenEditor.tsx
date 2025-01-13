@@ -1,4 +1,4 @@
-import { EditorMapper } from "./EditorMapper";
+import { EditorMapper } from "../EditorMapper/EditorMapper";
 import * as monaco from "monaco-editor";
 
 export interface NextGenEditorProps {
@@ -14,6 +14,7 @@ export interface NextGenEditorProps {
 	) => void;
 	name: string;
 	border?: string;
+	width?: number;
 }
 
 const NextGenEditor = (props: NextGenEditorProps) => {

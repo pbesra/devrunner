@@ -1,15 +1,15 @@
 import Box from "@mui/material/Box";
 import NextGenEditor from "components/NextGenEditor/NextGenEditor/NextGenEditor";
-import TransformerWrapper from "../TransformerWrapper/TransformerWrapper";
+import TransformerVWrapper from "../TransformerWrapper/TransformerVWrapper";
 import { useMUIXSLTTransformation } from "@hooks/index"; // Import the hook
 import { useState } from "react";
 
 const XmlXslt = () => {
 	const { result, xmlText, xslText, onChangeXmlValue, onChangeXslValue } =
-		useMUIXSLTTransformation(); // Destructure values from the hook
+		useMUIXSLTTransformation();
 
 	return (
-		<TransformerWrapper
+		<TransformerVWrapper
 			title="XSLT Transformation"
 			components={[
 				<NextGenEditor

@@ -14,7 +14,7 @@ export interface NextGenEditorProps {
 	) => void;
 	name: string;
 	border?: string;
-	width?: number;
+	width?: number | string;
 }
 
 const NextGenEditor = (props: NextGenEditorProps) => {

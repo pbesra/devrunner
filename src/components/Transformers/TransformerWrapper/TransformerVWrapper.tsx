@@ -5,7 +5,7 @@ export interface TransformerWrapperProps {
 	components?: React.ReactNode[];
 }
 
-const TransformerWrapper = (props: TransformerWrapperProps) => {
+const TransformerVWrapper = (props: TransformerWrapperProps) => {
 	return (
 		<Box>
 			<span
@@ -29,4 +29,4 @@ const TransformerWrapper = (props: TransformerWrapperProps) => {
 	);
 };
 
-export default TransformerWrapper;
+export default TransformerVWrapper;

@@ -20,7 +20,7 @@ const MuiTextEditor = (props: NextGenEditorProps) => {
 		<TextField
 			multiline
 			sx={{
-				width: "60vw",
+				width: props.width ?? "60vw",
 				"& .MuiInputBase-root": {
 					fontFamily:
 						"'Fira Code', 'Consolas', 'Courier New', monospace", // Custom font family

@@ -10,20 +10,20 @@ const XslButton = () => {
 		<Box>
 			<Box>
 				<WrapperIconButton hasSnackbar={true}>
-					<Tooltip title="Copy content">
+					<Tooltip placement="right" title="Copy content">
 						<ContentCopyIcon sx={{ fontSize: "16px" }} />
 					</Tooltip>
 				</WrapperIconButton>
 			</Box>
 			<Box>
-				<Tooltip title="Expand">
+				<Tooltip placement="right" title="Expand">
 					<IconButton>
 						<ZoomOutMapIcon sx={{ fontSize: "16px" }} />
 					</IconButton>
 				</Tooltip>
 			</Box>
 			<Box>
-				<Tooltip title="xslt instant">
+				<Tooltip placement="right" title="xslt instant">
 					<Checkbox
 						sx={{
 							"& .MuiSvgIcon-root": {

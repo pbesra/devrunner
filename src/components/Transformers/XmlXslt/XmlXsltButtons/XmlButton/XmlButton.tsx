@@ -5,32 +5,47 @@ import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 import { WrapperIconButton } from "@wrapper/index";
 import Tooltip from "@mui/material/Tooltip";
 import Checkbox from "@mui/material/Checkbox";
+import copyContent from "@utils/copyContent/copyContent";
 
-const XmlButton = () => {
+interface XmlButtonProps {
+	xmlContent?: string;
+}
+
+const XmlButton = (props: XmlButtonProps) => {
+	const onClickWrapperIconButton = () => {
+		copyContent({ source: "text", content: props.xmlContent });
+	};
 	return (
 		<Box>
 			<Box>
-				<WrapperIconButton hasSnackbar={true}>
+				<WrapperIconButton
+					onClickWrapperIconButton={onClickWrapperIconButton}
+					hasSnackbar={true}
+				>
 					<Tooltip title="Copy content">
 						<ContentCopyIcon sx={{ fontSize: "16px" }} />
 					</Tooltip>
 				</WrapperIconButton>
 			</Box>
 			<Box>
-				<IconButton>
-					<ZoomOutMapIcon sx={{ fontSize: "16px" }} />
-				</IconButton>
+				<Tooltip title="Expand">
+					<IconButton>
+						<ZoomOutMapIcon sx={{ fontSize: "16px" }} />
+					</IconButton>
+				</Tooltip>
 			</Box>
 			<Box>
-				<Checkbox
-					sx={{
-						"& .MuiSvgIcon-root": {
-							fontSize: 18,
-							width: 18,
-							height: 18,
-						},
-					}}
-				/>
+				<Tooltip title="xslt instant">
+					<Checkbox
+						sx={{
+							"& .MuiSvgIcon-root": {
+								fontSize: 18,
+								width: 18,
+								height: 18,
+							},
+						}}
+					/>
+				</Tooltip>
 			</Box>
 		</Box>
 	);

@@ -23,7 +23,7 @@ const XmlXslt = () => {
 							value={xmlText}
 						/>
 					),
-					utilNode: <XmlButton />,
+					utilNode: <XmlButton xmlContent={xmlText} />,
 				},
 				{
 					component: (

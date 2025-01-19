@@ -6,6 +6,7 @@ import TimedComponent from "components/TimedComponent/TimedComponent";
 
 interface CustomIconButtonProps extends IconButtonProps {
 	hasSnackbar?: boolean;
+	onClickWrapperIconButton?: () => void;
 }
 
 const WrapperIconButton: React.FC<CustomIconButtonProps> = (props) => {
@@ -15,6 +16,7 @@ const WrapperIconButton: React.FC<CustomIconButtonProps> = (props) => {
 	};
 	const onClickIconButton = () => {
 		setIsCopied(true);
+		props.onClickWrapperIconButton?.();
 	};
 	return (
 		<>

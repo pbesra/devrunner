@@ -16,20 +16,24 @@ const XslButton = () => {
 				</WrapperIconButton>
 			</Box>
 			<Box>
-				<IconButton>
-					<ZoomOutMapIcon sx={{ fontSize: "16px" }} />
-				</IconButton>
+				<Tooltip title="Expand">
+					<IconButton>
+						<ZoomOutMapIcon sx={{ fontSize: "16px" }} />
+					</IconButton>
+				</Tooltip>
 			</Box>
 			<Box>
-				<Checkbox
-					sx={{
-						"& .MuiSvgIcon-root": {
-							fontSize: 18,
-							width: 18,
-							height: 18,
-						},
-					}}
-				/>
+				<Tooltip title="xslt instant">
+					<Checkbox
+						sx={{
+							"& .MuiSvgIcon-root": {
+								fontSize: 18,
+								width: 18,
+								height: 18,
+							},
+						}}
+					/>
+				</Tooltip>
 			</Box>
 		</Box>
 	);

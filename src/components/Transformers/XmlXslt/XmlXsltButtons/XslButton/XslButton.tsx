@@ -4,6 +4,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 import { WrapperIconButton } from "@wrapper/index";
 import Tooltip from "@mui/material/Tooltip";
+import Checkbox from "@mui/material/Checkbox";
 const XslButton = () => {
 	return (
 		<Box>
@@ -18,6 +19,17 @@ const XslButton = () => {
 				<IconButton>
 					<ZoomOutMapIcon sx={{ fontSize: "16px" }} />
 				</IconButton>
+			</Box>
+			<Box>
+				<Checkbox
+					sx={{
+						"& .MuiSvgIcon-root": {
+							fontSize: 18,
+							width: 18,
+							height: 18,
+						},
+					}}
+				/>
 			</Box>
 		</Box>
 	);

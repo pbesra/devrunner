@@ -24,6 +24,7 @@
       "@hooks/*": ["apphooks/*"],
       "@utils/*": ["utils/*"],
       "@appcontext/*": ["app-context/*"],
+      "@wrapper/*": ["components/WrapperComponent/*"],
     }
   },
   "include": [

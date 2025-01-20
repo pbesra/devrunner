@@ -15,12 +15,15 @@ const XmlButton = (props: XmlButtonProps) => {
 	const onClickWrapperIconButton = () => {
 		copyContent({ source: "text", content: props.xmlContent });
 	};
+	const onChangeXmlInstant = (isChecked: boolean) => {
+		console.log(isChecked);
+	};
 	return (
 		<Box>
 			<Box>
 				<WrapperCopyContentButton
 					onClickWrapperIconButton={onClickWrapperIconButton}
-					hasSnackbar={true}
+					hasCopiedIcon={true}
 				>
 					<Tooltip placement="right" title="Copy content">
 						<ContentCopyIcon sx={{ fontSize: "16px" }} />
@@ -44,6 +47,9 @@ const XmlButton = (props: XmlButtonProps) => {
 								height: 18,
 							},
 						}}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+							onChangeXmlInstant(e.target.checked)
+						}
 					/>
 				</Tooltip>
 			</Box>

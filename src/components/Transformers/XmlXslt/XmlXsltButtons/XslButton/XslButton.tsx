@@ -9,7 +9,7 @@ const XslButton = () => {
 	return (
 		<Box>
 			<Box>
-				<WrapperCopyContentButton hasSnackbar={true}>
+				<WrapperCopyContentButton hasCopiedIcon={true}>
 					<Tooltip placement="right" title="Copy content">
 						<ContentCopyIcon sx={{ fontSize: "16px" }} />
 					</Tooltip>

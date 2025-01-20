@@ -4,7 +4,7 @@ import TimedComponent from "components/TimedComponent/TimedComponent";
 import { useState } from "react";
 
 interface WrapperCopyContentButtonProps extends IconButtonProps {
-	hasSnackbar?: boolean;
+	hasCopiedIcon?: boolean;
 	onClickWrapperIconButton?: () => void;
 }
 
@@ -19,14 +19,17 @@ const WrapperCopyContentButton: React.FC<WrapperCopyContentButtonProps> = (
 		setIsCopied(true);
 		props.onClickWrapperIconButton?.();
 	};
+
 	return (
 		<>
-			{isCopied && props.hasSnackbar ? (
+			{isCopied && props.hasCopiedIcon ? (
 				<TimedComponent onTimeout={onTimeout} duration={1}>
 					<CopiedContentIcon />
 				</TimedComponent>
 			) : (
-				<IconButton onClick={onClickIconButton} {...props} />
+				<IconButton onClick={onClickIconButton}>
+					{props.children}
+				</IconButton>
 			)}
 		</>
 	);

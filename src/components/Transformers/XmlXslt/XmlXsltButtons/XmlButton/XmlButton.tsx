@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
-import { WrapperIconButton } from "@wrapper/index";
+import { WrapperCopyContentButton } from "@wrapper/index";
 import Tooltip from "@mui/material/Tooltip";
 import Checkbox from "@mui/material/Checkbox";
 import copyContent from "@utils/copyContent/copyContent";
@@ -18,14 +18,14 @@ const XmlButton = (props: XmlButtonProps) => {
 	return (
 		<Box>
 			<Box>
-				<WrapperIconButton
+				<WrapperCopyContentButton
 					onClickWrapperIconButton={onClickWrapperIconButton}
 					hasSnackbar={true}
 				>
 					<Tooltip placement="right" title="Copy content">
 						<ContentCopyIcon sx={{ fontSize: "16px" }} />
 					</Tooltip>
-				</WrapperIconButton>
+				</WrapperCopyContentButton>
 			</Box>
 			<Box>
 				<Tooltip placement="right" title="Expand">

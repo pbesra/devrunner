@@ -27,8 +27,13 @@ const MuiTextEditor = (props: NextGenEditorProps) => {
 					fontSize: "14px", // Custom font size
 					color: "#454545",
 				},
+				"& .MuiOutlinedInput-root": {
+					"& fieldset": {
+						border: props.border,
+					},
+				},
 			}}
-			rows={18}
+			rows={props.rows ?? 18}
 			label={props.label}
 			value={textValue} // Reflect the current state in TextField
 			onChange={(event: React.ChangeEvent<HTMLInputElement>) =>

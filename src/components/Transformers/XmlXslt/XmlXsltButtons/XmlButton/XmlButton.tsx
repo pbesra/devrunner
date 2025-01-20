@@ -9,14 +9,19 @@ import copyContent from "@utils/copyContent/copyContent";
 
 interface XmlButtonProps {
 	xmlContent?: string;
+	onChangeXmlInstant?: (isChecked: boolean) => void;
+	onClickExpand?: () => void;
 }
 
 const XmlButton = (props: XmlButtonProps) => {
 	const onClickWrapperIconButton = () => {
 		copyContent({ source: "text", content: props.xmlContent });
 	};
-	const onChangeXmlInstant = (isChecked: boolean) => {
-		console.log(isChecked);
+	const _onChangeXmlInstant = (isChecked: boolean) => {
+		props.onChangeXmlInstant?.(isChecked);
+	};
+	const _onClickExpand = () => {
+		props.onClickExpand?.();
 	};
 	return (
 		<Box>
@@ -32,7 +37,7 @@ const XmlButton = (props: XmlButtonProps) => {
 			</Box>
 			<Box>
 				<Tooltip placement="right" title="Expand">
-					<IconButton>
+					<IconButton onClick={_onClickExpand}>
 						<ZoomOutMapIcon sx={{ fontSize: "16px" }} />
 					</IconButton>
 				</Tooltip>
@@ -48,7 +53,7 @@ const XmlButton = (props: XmlButtonProps) => {
 							},
 						}}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-							onChangeXmlInstant(e.target.checked)
+							_onChangeXmlInstant(e.target.checked)
 						}
 					/>
 				</Tooltip>

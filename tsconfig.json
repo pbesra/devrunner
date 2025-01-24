@@ -21,10 +21,10 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "@hooks/*": ["apphooks/*"],
-      "@utils/*": ["utils/*"],
-      "@appcontext/*": ["app-context/*"],
-      "@wrapper/*": ["components/WrapperComponent/*"],
+      "@hooks/*": ["v1/apphooks/*"],
+      "@utils/*": ["v1/utils/*"],
+      "@appcontext/*": ["v1/app-context/*"],
+      "@wrapper/*": ["v1/components/WrapperComponent/*"],
     }
   },
   "include": [

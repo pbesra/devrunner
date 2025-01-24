@@ -1,8 +1,8 @@
 import React from "react";
 import "./App.css";
-import Home from "./components/Home/Home";
+import Home from "./v1/components/Home/Home";
 import { Route, Routes } from "react-router";
-import AppRouter from "components/AppRouter/AppRouter";
+import AppRouter from "v1/components/AppRouter/AppRouter";
 
 function App() {
 	return (

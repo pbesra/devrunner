@@ -1,0 +1,6 @@
+const XML_INSTANT = {
+	XML: "XML",
+	XSL: "XSL",
+	CALCULATE_XSLT: "CALCULATE_XSLT",
+};
+export default XML_INSTANT;

@@ -1,7 +1,7 @@
 import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 import Box from "@mui/material/Box";
 import { nanoid } from "nanoid";
-import { useState, useRef } from "react";
+import {useRef} from 'react'
 import * as monaco from "monaco-editor";
 import { NextGenEditorProps } from "../NextGenEditor/NextGenEditor";
 
@@ -17,7 +17,7 @@ const MonacoEditor = ({
 	name,
 	border,
 }: NextGenEditorProps) => {
-	const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
+	const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>(null);
 	const onChangeValue = (value: string | undefined, event: any) => {
 		handleOnChangeInputText?.(editorRef?.current?.getValue() ?? "");
 	};

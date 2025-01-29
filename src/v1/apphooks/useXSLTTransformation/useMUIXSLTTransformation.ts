@@ -167,6 +167,7 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 					key: XmlTransformerStateConst.RESULT,
 					value: { message: nodeMsg.message, isValid: false },
 				});
+				return;
 			}
 		}
 		const transformedResult = xsltTransform(
@@ -197,6 +198,8 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 				value: { message: transformedResult, isValid: true },
 			});
 		}
+	};
+	const flipCalculateXslt = () => {
 		props.setXmlInstant?.({
 			key: XML_INSTANT.CALCULATE_XSLT,
 			value: false,
@@ -206,16 +209,19 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 		if (props.xmlInstant?.XSL) {
 			processXSLTOnChange();
 		}
+		flipCalculateXslt();
 	}, [transformerState.xslState.text]);
 
 	useEffect(() => {
 		if (props.xmlInstant?.XML) {
 			processXSLTOnChange();
 		}
+		flipCalculateXslt();
 	}, [transformerState.xmlState.text]);
 
 	useEffect(() => {
 		processXSLTOnChange();
+		flipCalculateXslt();
 	}, [
 		props.xmlInstant?.XML,
 		props.xmlInstant?.XSL,

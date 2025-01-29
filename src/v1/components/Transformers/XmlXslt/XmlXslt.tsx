@@ -44,18 +44,20 @@ const XmlXslt = () => {
 		xmlInstantReducer,
 		{ XML: true, XSL: true, CALCULATE_XSLT: false }
 	);
-	const { result, xmlText, xslText, onChangeXmlValue, onChangeXslValue } =
+	const { transformerState, onChangeXmlValue, onChangeXslValue } =
 		useMUIXSLTTransformation({
 			xmlInstant: xmlInstantState,
 			setXmlInstant: xmlInstantDispatch,
 		});
 
+	const { xmlState, xslState, resultState } = transformerState;
+
 	const resultHeight = useCallback(() => {
-		if (xmlText.length > 0 && xslText.length > 0 && result.length > 0) {
+		if (resultState.isValid) {
 			return 18;
 		}
 		return 4;
-	}, [xmlText, xslText, result]);
+	}, [resultState.text]);
 	const onClickShowResult = () => {
 		xmlInstantDispatch({
 			key: XML_INSTANT.CALCULATE_XSLT,
@@ -79,13 +81,13 @@ const XmlXslt = () => {
 							handleOnChangeInputText={onChangeXmlValue}
 							label="xml"
 							name="mui"
-							value={xmlText}
+							value={xmlState.text}
 						/>
 					),
 					utilNode: (
 						<XmlButton
 							onChangeXmlInstant={onChangeXmlInstant}
-							xmlContent={xmlText}
+							xmlContent={xslState.text}
 							defaultChecked={true}
 							checked={xmlInstantState.XML}
 						/>
@@ -97,7 +99,7 @@ const XmlXslt = () => {
 							handleOnChangeInputText={onChangeXslValue}
 							label="xsl"
 							name="mui"
-							value={xslText}
+							value={xslState.text}
 						/>
 					),
 					utilNode: (
@@ -112,12 +114,12 @@ const XmlXslt = () => {
 					component: (
 						<BoxWrapper
 							onClickShowResult={onClickShowResult}
-							value={result}
+							value={resultState.text}
 						>
 							<NextGenEditor
 								readonly={true}
 								name="mui"
-								value={result}
+								value={resultState.text}
 								border="none"
 								rows={resultHeight()}
 								width="59.5vw"

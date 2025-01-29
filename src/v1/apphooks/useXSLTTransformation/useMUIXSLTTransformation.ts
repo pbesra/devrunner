@@ -5,38 +5,103 @@ import {
 	actionProps,
 } from "v1/components/Transformers/XmlXslt/XmlXslt";
 import XML_INSTANT from "@utils/constants/XmlInstants/XmlInstants";
-
-const transformerReducer = (state: any, action: any) => {
-	return { ...state };
-};
+import XML_NODE_MESSAGE from "@utils/constants/xml-xslt-messages/xml-node/XmlNodeMessage";
 
 const ContentRefOptions = {
-	xml: "xml",
-	xsl: "xsl",
+	XML: "XML",
+	XSL: "XSL",
 };
 
-interface useMUIXSLTTransformationProps {
+interface UseMUIXSLTTransformationProps {
 	xmlInstant?: xmlInstantReducerProps;
 	setXmlInstant?: React.Dispatch<actionProps>;
 }
 
-const useMUIXSLTTransformation = (props: useMUIXSLTTransformationProps) => {
-	const [xmlText, setXmlText] = useState("");
-	const [xslText, setXslText] = useState("");
-	const [result, setResult] = useState("");
-	const [contentRef, setContentRef] = useState<string | undefined | null>();
+const XmlTransformerStateConst = {
+	XML: "XML",
+	XSL: "XSL",
+	RESULT: "RESULT",
+	CONTENT_REF: "CONTENT_REF",
+};
 
+interface XmlTransformerState {
+	xmlState: {
+		text: string;
+		isValid: boolean;
+	};
+	xslState: {
+		text: string;
+		isValid: boolean;
+	};
+	resultState: {
+		text: string;
+		isValid: boolean;
+	};
+	contentRef: {
+		name: string;
+	};
+}
+const xmlTransformerInitialState: XmlTransformerState = {
+	xmlState: {
+		text: "",
+		isValid: false,
+	},
+	xslState: {
+		text: "",
+		isValid: false,
+	},
+	resultState: {
+		text: "",
+		isValid: false,
+	},
+	contentRef: {
+		name: "",
+	},
+};
+interface XmlTransformerAction {
+	key: string;
+	value: any;
+}
+const transformerReducer = (
+	state: XmlTransformerState,
+	action: XmlTransformerAction
+) => {
+	if (action.key === XmlTransformerStateConst.XML) {
+		return { ...state, xmlState: { text: action.value, isValid: true } };
+	} else if (action.key === XmlTransformerStateConst.XSL) {
+		return { ...state, xslState: { text: action.value, isValid: true } };
+	} else if (action.key === XmlTransformerStateConst.RESULT) {
+		return {
+			...state,
+			resultState: {
+				text: action.value.message,
+				isValid: action.value.isValid,
+			},
+		};
+	} else if (action.key === XmlTransformerStateConst.CONTENT_REF) {
+		return { ...state, contentRef: { name: action.value.name } };
+	}
+	return { ...state };
+};
+
+const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 	const [transformerState, transfomerDispatcher] = useReducer(
 		transformerReducer,
-		{}
+		xmlTransformerInitialState
 	);
-	console.log("props", props);
 	const xsltTransform = (xmlText: string, xslText: string): string | null => {
 		const xml = parseXML(xmlText, "xml");
 		const xsl = parseXML(xslText, "xsl");
 
 		if (xml.hasError || xsl.hasError) {
-			setResult(xml.errorMessage || xsl.errorMessage);
+			transfomerDispatcher({
+				key: XmlTransformerStateConst.RESULT,
+				value: {
+					message: xml.errorMessage || xsl.errorMessage,
+					isValid: false,
+				},
+			});
+			return null;
 		}
 
 		try {
@@ -57,56 +122,80 @@ const useMUIXSLTTransformation = (props: useMUIXSLTTransformationProps) => {
 	};
 
 	const onChangeXmlValue = (xmlChangedValue: string) => {
-		setXmlText(xmlChangedValue);
-		setContentRef("xml");
+		transfomerDispatcher({
+			key: XmlTransformerStateConst.XML,
+			value: xmlChangedValue,
+		});
+		transfomerDispatcher({
+			key: XmlTransformerStateConst.CONTENT_REF,
+			value: { name: XmlTransformerStateConst.XML },
+		});
 	};
 	const onChangeXslValue = (xslChangedValue: string) => {
-		setXslText(xslChangedValue);
-		setContentRef("xsl");
+		transfomerDispatcher({
+			key: XmlTransformerStateConst.XSL,
+			value: xslChangedValue,
+		});
+		transfomerDispatcher({
+			key: XmlTransformerStateConst.CONTENT_REF,
+			value: { name: XmlTransformerStateConst.XSL },
+		});
 	};
 
 	const processXSLTOnChange = () => {
 		const xmlNodeMessageMapper = [
 			{
-				test: !xslText && !xmlText,
-				message: "Waiting for xml & xsl content...",
-				priority: 1,
+				test:
+					!transformerState.xslState.text &&
+					!transformerState.xmlState.text,
+				message: XML_NODE_MESSAGE.XSTL_RESULT_DEFAULT,
 			},
 			{
-				test: !xslText,
+				test: !transformerState.xslState.text,
 				message: "Waiting for xsl content...",
 				priority: 2,
 			},
 			{
-				test: !xmlText,
+				test: !transformerState.xmlState.text,
 				message: "Waiting for xml content...",
 				priority: 2,
 			},
 		];
 		for (const nodeMsg of xmlNodeMessageMapper) {
 			if (nodeMsg.test) {
-				setResult(nodeMsg.message);
-				break;
+				transfomerDispatcher({
+					key: XmlTransformerStateConst.RESULT,
+					value: { message: nodeMsg.message, isValid: false },
+				});
 			}
 		}
-		const transformedResult = xsltTransform(xmlText, xslText);
-		if (
+		const transformedResult = xsltTransform(
+			transformerState.xmlState.text,
+			transformerState.xslState.text
+		);
+		if (props.xmlInstant?.CALCULATE_XSLT) {
+			transfomerDispatcher({
+				key: XmlTransformerStateConst.RESULT,
+				value: { message: transformedResult, isValid: true },
+			});
+		} else if (
 			transformedResult !== null &&
 			props.xmlInstant?.XML &&
-			ContentRefOptions.xml === contentRef
+			ContentRefOptions.XML === transformerState.contentRef.name
 		) {
-			setResult(transformedResult);
+			transfomerDispatcher({
+				key: XmlTransformerStateConst.RESULT,
+				value: { message: transformedResult, isValid: true },
+			});
 		} else if (
 			transformedResult !== null &&
 			props.xmlInstant?.XSL &&
-			ContentRefOptions.xsl === contentRef
+			ContentRefOptions.XSL === transformerState.contentRef.name
 		) {
-			setResult(transformedResult);
-		} else if (
-			transformedResult !== null &&
-			props.xmlInstant?.CALCULATE_XSLT
-		) {
-			setResult(transformedResult);
+			transfomerDispatcher({
+				key: XmlTransformerStateConst.RESULT,
+				value: { message: transformedResult, isValid: true },
+			});
 		}
 		props.setXmlInstant?.({
 			key: XML_INSTANT.CALCULATE_XSLT,
@@ -114,10 +203,17 @@ const useMUIXSLTTransformation = (props: useMUIXSLTTransformationProps) => {
 		});
 	};
 	useEffect(() => {
-		if (props.xmlInstant?.XML || props.xmlInstant?.XSL) {
+		if (props.xmlInstant?.XSL) {
 			processXSLTOnChange();
 		}
-	}, [xmlText, xslText]);
+	}, [transformerState.xslState.text]);
+
+	useEffect(() => {
+		if (props.xmlInstant?.XML) {
+			processXSLTOnChange();
+		}
+	}, [transformerState.xmlState.text]);
+
 	useEffect(() => {
 		processXSLTOnChange();
 	}, [
@@ -126,7 +222,11 @@ const useMUIXSLTTransformation = (props: useMUIXSLTTransformationProps) => {
 		props.xmlInstant?.CALCULATE_XSLT,
 	]);
 
-	return { result, xmlText, xslText, onChangeXmlValue, onChangeXslValue };
+	return {
+		transformerState,
+		onChangeXmlValue,
+		onChangeXslValue,
+	};
 };
 
 export default useMUIXSLTTransformation;

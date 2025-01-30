@@ -6,6 +6,7 @@ import XmlButton from "./XmlXsltButtons/XmlButton/XmlButton";
 import XslButton from "./XmlXsltButtons/XslButton/XslButton";
 import BoxWrapper from "v1/components/BoxWrapper/BoxWrapper";
 import XML_INSTANT from "@utils/constants/XmlInstants/XmlInstants";
+import CoreAI from "v1/core.gen.ai/core.ai/CoreAI/CoreAI";
 
 export interface xmlInstantReducerProps {
 	XML: boolean;

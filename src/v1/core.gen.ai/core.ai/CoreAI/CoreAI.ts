@@ -1,10 +1,12 @@
-import { coreAIModels } from "./core-ai-models";
-import { CoreAIModelProps } from "./core-ai-models";
+import { coreAIModels } from "../core-ai-models";
+import { CoreAIModelProps } from "../core-ai-models";
+import { CoreAIModel } from "../core-ai-models";
+
 export interface GetAIResponseProps {
 	aiName?: string;
 	aiModel?: string;
 }
-export interface GetAIQueryResponse {
+export interface GetAIQueryResponseProps {
 	query?: string;
 	aiModel?: string;
 }
@@ -13,7 +15,10 @@ class CoreAI {
 	aiModel?: string;
 	aiInstance?: CoreAIModelProps;
 
-	constructor(_aiName?: string, _aiModel?: string) {
+	constructor(
+		_aiName: string = CoreAIModel.aiName,
+		_aiModel: string = CoreAIModel.aiModel
+	) {
 		this.aiName = _aiName;
 		this.aiModel = _aiModel;
 		this.aiInstance = this._getAiInstance();
@@ -34,3 +39,5 @@ class CoreAI {
 		});
 	}
 }
+
+export default CoreAI;

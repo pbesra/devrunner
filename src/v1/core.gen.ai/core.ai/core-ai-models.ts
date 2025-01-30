@@ -1,11 +1,11 @@
 import { getResponse as geminiGetResponse } from "../core.gemini.ai/core-gemini-ai";
-import { GetAIQueryResponse } from "./core-ai";
+import { GetAIQueryResponseProps } from "./CoreAI/CoreAI";
 
 export interface CoreAIModelProps {
 	aiName: string;
 	aiModel: string | null | undefined;
 	label: string;
-	getResponse: (props: GetAIQueryResponse) => void;
+	getResponse: (props: GetAIQueryResponseProps) => Promise<any>;
 }
 export const coreAIModels: CoreAIModelProps[] = [
 	{
@@ -21,3 +21,9 @@ export const coreAIModels: CoreAIModelProps[] = [
 		getResponse: geminiGetResponse,
 	},
 ];
+
+export const CoreAIModel = {
+	aiName: "gemini",
+	aiModel: "gemini-1.5-flash",
+	provider: "google",
+};

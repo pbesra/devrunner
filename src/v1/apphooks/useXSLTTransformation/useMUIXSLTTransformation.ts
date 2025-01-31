@@ -6,6 +6,7 @@ import {
 } from "v1/components/Transformers/XmlXslt/XmlXslt";
 import XML_INSTANT from "@utils/constants/XmlInstants/XmlInstants";
 import XML_NODE_MESSAGE from "@utils/constants/xml-xslt-messages/xml-node/XmlNodeMessage";
+import CoreAI from "v1/core.gen.ai/core.ai/CoreAI/CoreAI";
 
 const ContentRefOptions = {
 	XML: "XML",
@@ -36,6 +37,8 @@ interface XmlTransformerState {
 	resultState: {
 		text: string;
 		isValid: boolean;
+		isLoading?: boolean;
+		isAIResponse?: boolean;
 	};
 	contentRef: {
 		name: string;
@@ -53,6 +56,8 @@ const xmlTransformerInitialState: XmlTransformerState = {
 	resultState: {
 		text: "",
 		isValid: false,
+		isLoading: false,
+		isAIResponse: false,
 	},
 	contentRef: {
 		name: "",
@@ -76,6 +81,8 @@ const transformerReducer = (
 			resultState: {
 				text: action.value.message,
 				isValid: action.value.isValid,
+				isLoading: action.value.isLoading,
+				isAIResponse: action.value.isAIResponse,
 			},
 		};
 	} else if (action.key === XmlTransformerStateConst.CONTENT_REF) {
@@ -85,6 +92,7 @@ const transformerReducer = (
 };
 
 const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
+	const coreAI = new CoreAI();
 	const [transformerState, transfomerDispatcher] = useReducer(
 		transformerReducer,
 		xmlTransformerInitialState
@@ -94,13 +102,44 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 		const xsl = parseXML(xslText, "xsl");
 
 		if (xml.hasError || xsl.hasError) {
+			const errorRef = xml.hasError ? "xml" : "xsl";
 			transfomerDispatcher({
 				key: XmlTransformerStateConst.RESULT,
 				value: {
-					message: xml.errorMessage || xsl.errorMessage,
+					message: "Result loading...",
 					isValid: false,
+					isLoading: true,
+					isAIResponse: false,
 				},
 			});
+			coreAI
+				.getResponse(
+					`What's the issue in this xml: ${
+						xml.errorMessage || xsl.errorMessage
+					}. Just explain. Don't give me the code.`
+				)
+				.then((aix) => {
+					transfomerDispatcher({
+						key: XmlTransformerStateConst.RESULT,
+						value: {
+							message: `${errorRef} has error. More details - ${aix}`,
+							isValid: false,
+							isLoading: false,
+							isAIResponse: true,
+						},
+					});
+				})
+				.catch((aix) => {
+					transfomerDispatcher({
+						key: XmlTransformerStateConst.RESULT,
+						value: {
+							message: xml.errorMessage || xsl.errorMessage,
+							isValid: false,
+							isLoading: false,
+							isAIResponse: false,
+						},
+					});
+				});
 			return null;
 		}
 

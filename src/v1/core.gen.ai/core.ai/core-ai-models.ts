@@ -10,7 +10,7 @@ export interface CoreAIModelProps {
 export const coreAIModels: CoreAIModelProps[] = [
 	{
 		aiName: "gemini",
-		aiModel: null,
+		aiModel: "gemini-1.5-flash",
 		label: "Gemini",
 		getResponse: geminiGetResponse,
 	},

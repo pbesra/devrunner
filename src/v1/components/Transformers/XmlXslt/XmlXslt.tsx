@@ -6,7 +6,6 @@ import XmlButton from "./XmlXsltButtons/XmlButton/XmlButton";
 import XslButton from "./XmlXsltButtons/XslButton/XslButton";
 import BoxWrapper from "v1/components/BoxWrapper/BoxWrapper";
 import XML_INSTANT from "@utils/constants/XmlInstants/XmlInstants";
-import CoreAI from "v1/core.gen.ai/core.ai/CoreAI/CoreAI";
 
 export interface xmlInstantReducerProps {
 	XML: boolean;
@@ -56,6 +55,9 @@ const XmlXslt = () => {
 	const resultHeight = useCallback(() => {
 		if (resultState.isValid) {
 			return 18;
+		}
+		if (resultState.isAIResponse) {
+			return 10;
 		}
 		return 4;
 	}, [resultState.text]);
@@ -116,6 +118,7 @@ const XmlXslt = () => {
 						<BoxWrapper
 							onClickShowResult={onClickShowResult}
 							value={resultState.text}
+							isLoading={resultState.isLoading}
 						>
 							<NextGenEditor
 								readonly={true}

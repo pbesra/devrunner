@@ -4,6 +4,7 @@ import { WrapperCopyContentButton } from "v1/components/WrapperComponent/index";
 import Tooltip from "@mui/material/Tooltip";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import copyContent from "v1/utils/copyContent/copyContent";
+import WrapperLinearProgress from "@wrapper/WrapperLinearProgress/WrapperLinearProgress";
 
 interface BoxWrapperProps {
 	children: React.ReactNode;
@@ -11,6 +12,7 @@ interface BoxWrapperProps {
 	rightNode?: React.ReactNode;
 	value?: string;
 	onClickShowResult?: () => void;
+	isLoading?: boolean;
 }
 
 const BoxWrapper: React.FC<BoxWrapperProps> = (props) => {
@@ -26,7 +28,6 @@ const BoxWrapper: React.FC<BoxWrapperProps> = (props) => {
 				borderColor: "#006101",
 			}}
 		>
-			{/* Flex container for heading and buttons */}
 			<Box
 				sx={{
 					display: "flex",
@@ -35,7 +36,6 @@ const BoxWrapper: React.FC<BoxWrapperProps> = (props) => {
 					padding: "0.5rem",
 				}}
 			>
-				{/* Left Node */}
 				<Box
 					sx={{
 						fontWeight: "bold",
@@ -75,8 +75,13 @@ const BoxWrapper: React.FC<BoxWrapperProps> = (props) => {
 				</Box>
 			</Box>
 
-			{/* Children Content */}
-			<Box>{props.children}</Box>
+			<Box>
+				{props.isLoading ? (
+					<WrapperLinearProgress width="59.5vw" />
+				) : (
+					props.children
+				)}
+			</Box>
 		</Box>
 	);
 };

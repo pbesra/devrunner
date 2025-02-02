@@ -102,7 +102,9 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 		const xsl = parseXML(xslText, "xsl");
 
 		if (xml.hasError || xsl.hasError) {
-			const errorRef = xml.hasError ? "xml" : "xsl";
+			const errorRef = xml.hasError
+				? { name: "xml", value: xmlText }
+				: { name: "xsl", value: xslText };
 			transfomerDispatcher({
 				key: XmlTransformerStateConst.RESULT,
 				value: {
@@ -114,15 +116,13 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 			});
 			coreAI
 				.getResponse(
-					`What's the issue in this xml: ${
-						xml.errorMessage || xsl.errorMessage
-					}. Just explain. Don't give me the code.`
+					`What's the issue in this xml/xslt? Here is the xml/xslt: ${errorRef.value}. Don't give me the code. Give the exact reason why the xml/xslt is invalid.`
 				)
 				.then((aix) => {
 					transfomerDispatcher({
 						key: XmlTransformerStateConst.RESULT,
 						value: {
-							message: `${errorRef} has error. More details - ${aix}`,
+							message: `${errorRef.name} has error. More details - ${aix}`,
 							isValid: false,
 							isLoading: false,
 							isAIResponse: true,

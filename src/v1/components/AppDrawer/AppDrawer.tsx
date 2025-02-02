@@ -23,7 +23,7 @@ type AppDrawerProps = {
 		anchor: Anchor,
 		open: boolean
 	) => (event: React.KeyboardEvent | React.MouseEvent) => void;
-	DrawerLogo?: React.ComponentType;
+	DrawerLogo?: React.ComponentType<{ onClickHome: () => void }>;
 	onClickAppDrawerItem?: (name: string) => void;
 };
 
@@ -113,7 +113,11 @@ const AppDrawer = ({
 					>
 						{DrawerLogo && (
 							<Box>
-								<DrawerLogo />
+								<DrawerLogo
+									onClickHome={() =>
+										toggleDrawer(anchor, false)
+									}
+								/>
 							</Box>
 						)}
 						{list(anchor)}

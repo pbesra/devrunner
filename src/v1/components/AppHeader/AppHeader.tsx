@@ -18,7 +18,9 @@ const AppHeader = () => {
 				drawerItems={transformers}
 				state={state}
 				toggleDrawer={toggleDrawer}
-				DrawerLogo={HomeLogo}
+				DrawerLogo={(props) => {
+					return <HomeLogo {...props} />;
+				}}
 			/>
 		</>
 	);

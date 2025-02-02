@@ -1,9 +1,13 @@
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router";
 
-const HomeLogo = () => {
+interface HomeLogoProps {
+	onClickHome: () => void;
+}
+const HomeLogo = ({ onClickHome }: HomeLogoProps) => {
 	const navigate = useNavigate();
 	const onClickHomeLogo = () => {
+		onClickHome();
 		navigate("/");
 	};
 	return (

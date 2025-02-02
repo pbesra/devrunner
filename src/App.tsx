@@ -1,16 +1,19 @@
 import React from "react";
 import "./App.css";
-import Home from "./v1/components/Home/Home";
 import { Route, Routes } from "react-router";
 import AppRouter from "v1/components/AppRouter/AppRouter";
+import { Provider } from "react-redux";
+import rootStore from "v1/appReduxStore/rootStore/rootStore";
 
 function App() {
 	return (
-		<div className="App">
-			<Routes>
-				<Route path="*" element={<AppRouter />} />
-			</Routes>
-		</div>
+		<Provider store={rootStore}>
+			<div className="App">
+				<Routes>
+					<Route path="*" element={<AppRouter />} />
+				</Routes>
+			</div>
+		</Provider>
 	);
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import parseXML from "v1/utils/parseXML/parseXML";
 import {
 	xmlInstantReducerProps,
@@ -6,7 +6,9 @@ import {
 } from "v1/components/Transformers/XmlXslt/XmlXslt";
 import XML_INSTANT from "@utils/constants/XmlInstants/XmlInstants";
 import XML_NODE_MESSAGE from "@utils/constants/xml-xslt-messages/xml-node/XmlNodeMessage";
-import CoreAI from "v1/core.gen.ai/core.ai/CoreAI/CoreAI";
+
+import { useSelector } from "react-redux";
+import { RootState } from "v1/appReduxStore/rootStore/rootStore";
 
 const ContentRefOptions = {
 	XML: "XML",
@@ -92,11 +94,23 @@ const transformerReducer = (
 };
 
 const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
-	const coreAI = new CoreAI();
+	const coreAI = useSelector((state: RootState) => state.coreAI);
+
 	const [transformerState, transfomerDispatcher] = useReducer(
 		transformerReducer,
 		xmlTransformerInitialState
 	);
+	const setDefaultFallbackResultResponse = (_xml: any, _xsl: any) => {
+		transfomerDispatcher({
+			key: XmlTransformerStateConst.RESULT,
+			value: {
+				message: _xml.errorMessage || _xsl.errorMessage,
+				isValid: false,
+				isLoading: false,
+				isAIResponse: false,
+			},
+		});
+	};
 	const xsltTransform = (xmlText: string, xslText: string): string | null => {
 		const xml = parseXML(xmlText, "xml");
 		const xsl = parseXML(xslText, "xsl");
@@ -114,8 +128,12 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 					isAIResponse: false,
 				},
 			});
-			coreAI
-				.getResponse(
+			if (!coreAI.isCoreAIOn) {
+				setDefaultFallbackResultResponse(xml, xsl);
+			}
+
+			coreAI.coreAI
+				?.getResponse(
 					`What's the issue in this xml/xslt? Here is the xml/xslt: ${errorRef.value}. Don't give me the code. Give the exact reason why the xml/xslt is invalid.`
 				)
 				.then((aix) => {
@@ -130,15 +148,7 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 					});
 				})
 				.catch((aix) => {
-					transfomerDispatcher({
-						key: XmlTransformerStateConst.RESULT,
-						value: {
-							message: xml.errorMessage || xsl.errorMessage,
-							isValid: false,
-							isLoading: false,
-							isAIResponse: false,
-						},
-					});
+					setDefaultFallbackResultResponse(xml, xsl);
 				});
 			return null;
 		}

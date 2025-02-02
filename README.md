@@ -4,10 +4,10 @@
 
 ## **✨ Features**
 
-✅ **XSLT Transformation** – Convert XML data using XSLT stylesheets
-✅ **XML ↔ JSON Converter** – Seamlessly convert XML to JSON and vice versa
-✅ **Text Comparison** – Compare two text files or code snippets to find differences
-✅ **More Tools Coming Soon!**
+-   ✅ **XSLT Transformation** – Convert XML data using XSLT stylesheets
+    ✅ **XML ↔ JSON Converter** – Seamlessly convert XML to JSON and vice versa
+    ✅ **Text Comparison** – Compare two text files or code snippets to find differences
+    ✅ **More Tools Coming Soon!**
 
 ## **🎯 Why Use DevRunner?**
 

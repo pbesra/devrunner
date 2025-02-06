@@ -6,6 +6,9 @@ import XmlButton from "./XmlXsltButtons/XmlButton/XmlButton";
 import XslButton from "./XmlXsltButtons/XslButton/XslButton";
 import BoxWrapper from "v1/components/BoxWrapper/BoxWrapper";
 import XML_INSTANT from "@utils/constants/XmlInstants/XmlInstants";
+import SquaredBoxWrapper from "v1/components/SquaredBoxWrapper/SquaredBoxWrapper";
+import Box from "@mui/material/Box";
+import TopBoxComponent from "v1/components/SquaredBoxWrapper/TopBoxComponent/TopBoxComponent";
 
 export interface xmlInstantReducerProps {
 	XML: boolean;
@@ -80,17 +83,23 @@ const XmlXslt = () => {
 			components={[
 				{
 					component: (
-						<NextGenEditor
-							handleOnChangeInputText={onChangeXmlValue}
-							label="xml"
-							name="mui"
-							value={xmlState.text}
+						<SquaredBoxWrapper
+							children={
+								<NextGenEditor
+									handleOnChangeInputText={onChangeXmlValue}
+									name="mui"
+									value={xmlState.text}
+									border="none"
+									placeholder="Enter xml here ..."
+								/>
+							}
+							TopComponent={<TopBoxComponent title="xml" />}
 						/>
 					),
 					utilNode: (
 						<XmlButton
 							onChangeXmlInstant={onChangeXmlInstant}
-							xmlContent={xslState.text}
+							xmlContent={xmlState.text}
 							defaultChecked={true}
 							checked={xmlInstantState.XML}
 						/>
@@ -98,11 +107,17 @@ const XmlXslt = () => {
 				},
 				{
 					component: (
-						<NextGenEditor
-							handleOnChangeInputText={onChangeXslValue}
-							label="xsl"
-							name="mui"
-							value={xslState.text}
+						<SquaredBoxWrapper
+							children={
+								<NextGenEditor
+									handleOnChangeInputText={onChangeXslValue}
+									name="mui"
+									value={xslState.text}
+									placeholder="Enter xsl here ..."
+									border="none"
+								/>
+							}
+							TopComponent={<TopBoxComponent title="xsl" />}
 						/>
 					),
 					utilNode: (

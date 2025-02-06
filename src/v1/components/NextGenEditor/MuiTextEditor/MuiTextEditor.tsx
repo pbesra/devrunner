@@ -44,6 +44,7 @@ const MuiTextEditor = (props: NextGenEditorProps) => {
 					readOnly: props.readonly,
 				},
 			}}
+			placeholder={props.placeholder}
 		/>
 	);
 };

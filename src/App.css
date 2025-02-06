@@ -56,5 +56,10 @@
     transform: translateY(0);
   }
 }
+.box-border-style{
+  border-color: #bbbbbb !important;
+  border: 1px solid;
+  border-radius: 4px;
+}
 
 

@@ -1,7 +1,7 @@
 import NextGenEditor from "v1/components/NextGenEditor/NextGenEditor/NextGenEditor";
 import TransformerVWrapper from "../TransformerWrapper/TransformerVWrapper";
 import { useMUIXSLTTransformation } from "v1/apphooks/index"; // Import the hook
-import React, { useReducer, useCallback, useState } from "react";
+import React, { useReducer, useCallback, useState, useMemo } from "react";
 import XmlButton from "./XmlXsltButtons/XmlButton/XmlButton";
 import XslButton from "./XmlXsltButtons/XslButton/XslButton";
 import BoxWrapper from "v1/components/BoxWrapper/BoxWrapper";
@@ -87,6 +87,27 @@ const XmlXslt = () => {
 		console.log("click isMinimise", isMinimise);
 		setIsMinimise(false);
 	};
+	const contentMapper: { [key: string]: string } = useMemo(() => {
+		return {
+			xml: xmlState.text,
+			xsl: xslState.text,
+			result: resultState.text,
+		};
+	}, [xmlState.text, xslState.text, resultState.text]);
+	const handleDownload = (identifier: string, textContent?: string) => {
+		const xmlContent = contentMapper[identifier];
+		const blob = new Blob([xmlContent], { type: "application/xml" });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement("a");
+		a.href = url;
+		const timestamp = new Date().toISOString().replace(/[:.-]/g, "_");
+		const filename = `${identifier}_data_${timestamp}.xml`;
+		a.download = filename;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	};
 
 	return (
 		<TransformerVWrapper
@@ -134,6 +155,7 @@ const XmlXslt = () => {
 							xmlContent={xmlState.text}
 							defaultChecked={true}
 							checked={xmlInstantState.XML}
+							onClickDownload={handleDownload}
 						/>
 					),
 				},
@@ -157,6 +179,7 @@ const XmlXslt = () => {
 							defaultChecked={true}
 							onChangeXslInstant={onChangeXslInstant}
 							checked={xmlInstantState.XSL}
+							onClickDownload={handleDownload}
 						/>
 					),
 				},

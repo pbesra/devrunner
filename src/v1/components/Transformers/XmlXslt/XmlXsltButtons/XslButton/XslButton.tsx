@@ -15,6 +15,7 @@ interface XslButtonProps {
 	onClickExpand?: () => void;
 	defaultChecked?: boolean;
 	checked?: boolean;
+	onClickDownload?: (indentifier: string, textContent?: string) => void;
 }
 
 const XslButton = (props: XslButtonProps) => {
@@ -63,7 +64,7 @@ const XslButton = (props: XslButtonProps) => {
 			</Box>
 			<Box>
 				<Tooltip placement="right" title="Download">
-					<IconButton>
+					<IconButton onClick={() => props.onClickDownload?.("xsl")}>
 						<FileDownloadIcon sx={{ fontSize: "18px" }} />
 					</IconButton>
 				</Tooltip>

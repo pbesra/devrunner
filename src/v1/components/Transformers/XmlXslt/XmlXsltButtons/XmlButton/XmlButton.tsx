@@ -16,6 +16,7 @@ interface XmlButtonProps {
 	onClickExpand?: () => void;
 	defaultChecked?: boolean;
 	checked?: boolean;
+	onClickDownload?: (identifier: string, textContent?: string) => void;
 }
 
 const XmlButton = (props: XmlButtonProps) => {
@@ -74,7 +75,7 @@ const XmlButton = (props: XmlButtonProps) => {
 			</Box>
 			<Box>
 				<Tooltip placement="right" title="Download">
-					<IconButton>
+					<IconButton onClick={() => props.onClickDownload?.("xml")}>
 						<FileDownloadIcon sx={{ fontSize: "18px" }} />
 					</IconButton>
 				</Tooltip>

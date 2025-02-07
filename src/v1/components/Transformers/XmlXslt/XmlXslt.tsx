@@ -1,7 +1,7 @@
 import NextGenEditor from "v1/components/NextGenEditor/NextGenEditor/NextGenEditor";
 import TransformerVWrapper from "../TransformerWrapper/TransformerVWrapper";
 import { useMUIXSLTTransformation } from "v1/apphooks/index"; // Import the hook
-import React, { useReducer, useCallback } from "react";
+import React, { useReducer, useCallback, useState } from "react";
 import XmlButton from "./XmlXsltButtons/XmlButton/XmlButton";
 import XslButton from "./XmlXsltButtons/XslButton/XslButton";
 import BoxWrapper from "v1/components/BoxWrapper/BoxWrapper";
@@ -9,6 +9,9 @@ import XML_INSTANT from "@utils/constants/XmlInstants/XmlInstants";
 import SquaredBoxWrapper from "v1/components/SquaredBoxWrapper/SquaredBoxWrapper";
 import Box from "@mui/material/Box";
 import TopBoxComponent from "v1/components/SquaredBoxWrapper/TopBoxComponent/TopBoxComponent";
+import BoxFold from "v1/components/BoxFold/BoxFold";
+import { Height } from "@mui/icons-material";
+import { Tooltip } from "@mui/material";
 
 export interface xmlInstantReducerProps {
 	XML: boolean;
@@ -43,6 +46,7 @@ const xmlInstantReducer = (
 };
 
 const XmlXslt = () => {
+	const [isMinimise, setIsMinimise] = useState(false);
 	const [xmlInstantState, xmlInstantDispatch] = useReducer(
 		xmlInstantReducer,
 		{ XML: true, XSL: true, CALCULATE_XSLT: false }
@@ -76,13 +80,20 @@ const XmlXslt = () => {
 	const onChangeXslInstant = (isChecked: boolean) => {
 		xmlInstantDispatch({ key: XML_INSTANT.XSL, value: isChecked });
 	};
+	const onClickMinimize = () => {
+		setIsMinimise(true);
+	};
+	const onClickBoxFold = () => {
+		console.log("click isMinimise", isMinimise);
+		setIsMinimise(false);
+	};
 
 	return (
 		<TransformerVWrapper
 			title="XSLT Transformation"
 			components={[
 				{
-					component: (
+					component: !isMinimise ? (
 						<SquaredBoxWrapper
 							children={
 								<NextGenEditor
@@ -93,10 +104,31 @@ const XmlXslt = () => {
 									placeholder="Enter xml here ..."
 								/>
 							}
-							TopComponent={<TopBoxComponent title="xml" />}
+							TopComponent={
+								<TopBoxComponent
+									onClickMinimize={onClickMinimize}
+									title="xml"
+								/>
+							}
 						/>
+					) : (
+						<SquaredBoxWrapper>
+							<Tooltip placement="bottom" title="Open xml">
+								<span>
+									<BoxFold
+										boxLabel="xml"
+										sx={{
+											width: "60vw",
+											height: "24px",
+											cursor: "pointer",
+										}}
+										onClick={onClickBoxFold}
+									/>
+								</span>
+							</Tooltip>
+						</SquaredBoxWrapper>
 					),
-					utilNode: (
+					utilNode: !isMinimise && (
 						<XmlButton
 							onChangeXmlInstant={onChangeXmlInstant}
 							xmlContent={xmlState.text}

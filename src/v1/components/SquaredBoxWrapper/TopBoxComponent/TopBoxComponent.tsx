@@ -1,12 +1,16 @@
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import { LiaWindowMinimize } from "react-icons/lia";
-import IconButton from "@mui/material/IconButton";
 interface TopBoxComponentProps {
 	title: string;
+	onClickMinimize?: (_isMinimise: boolean) => void;
 }
 const TopBoxComponent = (props: TopBoxComponentProps) => {
+	const onClockLiaWindowMinimize = () => {
+		if (props.onClickMinimize) {
+			props.onClickMinimize(true);
+		}
+	};
 	return (
 		<Box
 			sx={{
@@ -40,6 +44,7 @@ const TopBoxComponent = (props: TopBoxComponentProps) => {
 								height: "18px",
 								cursor: "pointer",
 							}}
+							onClick={onClockLiaWindowMinimize}
 						/>
 					</span>
 				</Tooltip>

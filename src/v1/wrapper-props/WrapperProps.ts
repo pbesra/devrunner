@@ -5,5 +5,5 @@ export type WrapperBoxProps = ComponentProps<typeof Box> & {
 	BottomComponent?: React.ReactNode;
 	RightComponent?: React.ReactNode;
 	LeftComponent?: React.ReactNode;
-	boxTitle?: string;
+	boxLabel?: string;
 };

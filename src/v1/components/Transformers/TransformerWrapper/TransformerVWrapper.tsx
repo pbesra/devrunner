@@ -23,7 +23,6 @@ const TransformerVWrapper = (props: TransformerWrapperProps) => {
 			<Box
 				sx={{
 					width: "65%",
-
 					padding: 2,
 				}}
 			>
@@ -61,7 +60,7 @@ const TransformerVWrapper = (props: TransformerWrapperProps) => {
 									{Comp.component}
 								</Box>
 
-								{Comp.utilNode && (
+								{Comp.utilNode && Comp.component && (
 									<Box
 										sx={{
 											marginLeft: 1,

@@ -12,6 +12,7 @@ import TopBoxComponent from "v1/components/SquaredBoxWrapper/TopBoxComponent/Top
 import BoxFold from "v1/components/BoxFold/BoxFold";
 import { Height } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
+import CoreStackBlitz from "v1/core.integration/core.stackblitz/CoreStackBlitz/CoreStackBlitz";
 
 export interface xmlInstantReducerProps {
 	XML: boolean;
@@ -46,6 +47,7 @@ const xmlInstantReducer = (
 };
 
 const XmlXslt = () => {
+	const codeBox = new CoreStackBlitz();
 	const [isMinimise, setIsMinimise] = useState(false);
 	const [xmlInstantState, xmlInstantDispatch] = useReducer(
 		xmlInstantReducer,
@@ -109,6 +111,11 @@ const XmlXslt = () => {
 		URL.revokeObjectURL(url);
 	};
 
+	const handleOpenInStackblitz = (identifier: string) => {
+		const content = contentMapper[identifier];
+		codeBox.handleOpenInStackBlitz(content, "xml", `${identifier}_data`);
+	};
+
 	return (
 		<TransformerVWrapper
 			title="XSLT Transformation"
@@ -156,6 +163,7 @@ const XmlXslt = () => {
 							defaultChecked={true}
 							checked={xmlInstantState.XML}
 							onClickDownload={handleDownload}
+							onClickOpenInStackBlitz={handleOpenInStackblitz}
 						/>
 					),
 				},

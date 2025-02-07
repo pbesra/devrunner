@@ -17,6 +17,7 @@ interface XmlButtonProps {
 	defaultChecked?: boolean;
 	checked?: boolean;
 	onClickDownload?: (identifier: string, textContent?: string) => void;
+	onClickOpenInStackBlitz?: (identifier: string) => void;
 }
 
 const XmlButton = (props: XmlButtonProps) => {
@@ -34,7 +35,9 @@ const XmlButton = (props: XmlButtonProps) => {
 		<Box>
 			<Box>
 				<Tooltip placement="right" title="Open in stackblitz">
-					<IconButton>
+					<IconButton
+						onClick={() => props.onClickOpenInStackBlitz?.("xml")}
+					>
 						<LaunchIcon sx={{ fontSize: "16px" }} />
 					</IconButton>
 				</Tooltip>

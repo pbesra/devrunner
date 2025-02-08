@@ -6,9 +6,9 @@ const BoxFold: React.FC<WrapperBoxProps> = (props) => {
 	return (
 		<Box
 			onClick={props.onClick}
-			sx={{ ...props.sx, color: "#003178" }}
+			sx={{ color: "#003178", ...props.sx }}
 			component="div"
-			className={!props.sx ? "box-border-style" : undefined}
+			className={props.hasClassName ? "box-border-style" : undefined}
 		>
 			{props.boxLabel}
 		</Box>

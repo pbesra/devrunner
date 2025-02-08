@@ -43,6 +43,7 @@ const TopBoxComponent = (props: TopBoxComponentProps) => {
 								width: "18px",
 								height: "18px",
 								cursor: "pointer",
+								color: "#676767",
 							}}
 							onClick={onClockLiaWindowMinimize}
 						/>

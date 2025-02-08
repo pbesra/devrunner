@@ -1,6 +1,7 @@
 import stackBlitz, { ProjectTemplate } from "@stackblitz/sdk";
+import { ICoreCodeEditor } from "v1/core.integration/core-code-editor/CoreCodeEditor/CoreCodeEditor";
 
-class CoreStackBlitz {
+class CoreStackBlitz implements ICoreCodeEditor {
 	title: string;
 	description: string;
 	template: ProjectTemplate;
@@ -13,10 +14,17 @@ class CoreStackBlitz {
 		this.description = _description;
 		this.template = _template;
 	}
+	handleOpenInCodeEditor(
+		content: string,
+		fileExtention: string = "txt",
+		contentName: string = "my_content"
+	): void {
+		this.handleOpenInStackBlitz(content, fileExtention, contentName);
+	}
 	handleOpenInStackBlitz(
 		content: string,
 		fileExtention = "txt",
-		contentName = "your_content"
+		contentName = "my_content"
 	) {
 		const xmlContent = content;
 

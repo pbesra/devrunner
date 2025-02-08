@@ -13,6 +13,9 @@ import BoxFold from "v1/components/BoxFold/BoxFold";
 import { Height } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
 import CoreStackBlitz from "v1/core.integration/core.stackblitz/CoreStackBlitz/CoreStackBlitz";
+import { useSelector } from "react-redux";
+import { RootState } from "v1/appReduxStore/rootStore/rootStore";
+import CoreCodeEditor from "v1/core.integration/core-code-editor/CoreCodeEditor/CoreCodeEditor";
 
 export interface xmlInstantReducerProps {
 	XML: boolean;
@@ -46,9 +49,38 @@ const xmlInstantReducer = (
 	return { ...state };
 };
 
+interface MinimiseState {
+	xml: {
+		isMinimise: boolean;
+	};
+	xsl: {
+		isMinimise: boolean;
+	};
+}
+const initialMinimiseState: MinimiseState = {
+	xml: {
+		isMinimise: false,
+	},
+	xsl: {
+		isMinimise: false,
+	},
+};
+const minimiseReducer = (state: MinimiseState, action: actionProps) => {
+	if (action.key === XML_INSTANT.XML) {
+		return { ...state, xml: { isMinimise: action.value } };
+	} else if (action.key === XML_INSTANT.XSL) {
+		return { ...state, xsl: { isMinimise: action.value } };
+	}
+	return { ...state };
+};
+
 const XmlXslt = () => {
-	const codeBox = new CoreStackBlitz();
-	const [isMinimise, setIsMinimise] = useState(false);
+	const coreCodeEditor = new CoreCodeEditor(new CoreStackBlitz());
+	//const [isMinimise, setIsMinimise] = useState(false);
+	const [isMinimise, minimiseDispatch] = useReducer(
+		minimiseReducer,
+		initialMinimiseState
+	);
 	const [xmlInstantState, xmlInstantDispatch] = useReducer(
 		xmlInstantReducer,
 		{ XML: true, XSL: true, CALCULATE_XSLT: false }
@@ -82,12 +114,11 @@ const XmlXslt = () => {
 	const onChangeXslInstant = (isChecked: boolean) => {
 		xmlInstantDispatch({ key: XML_INSTANT.XSL, value: isChecked });
 	};
-	const onClickMinimize = () => {
-		setIsMinimise(true);
+	const onClickMinimize = (id: string) => {
+		minimiseDispatch({ key: id, value: true });
 	};
-	const onClickBoxFold = () => {
-		console.log("click isMinimise", isMinimise);
-		setIsMinimise(false);
+	const onClickBoxFold = (id: string) => {
+		minimiseDispatch({ key: id, value: false });
 	};
 	const contentMapper: { [key: string]: string } = useMemo(() => {
 		return {
@@ -113,7 +144,11 @@ const XmlXslt = () => {
 
 	const handleOpenInStackblitz = (identifier: string) => {
 		const content = contentMapper[identifier];
-		codeBox.handleOpenInStackBlitz(content, "xml", `${identifier}_data`);
+		coreCodeEditor.handleOpenInCodeEditor(
+			content,
+			"xml",
+			`${identifier}_data`
+		);
 	};
 
 	return (
@@ -121,7 +156,7 @@ const XmlXslt = () => {
 			title="XSLT Transformation"
 			components={[
 				{
-					component: !isMinimise ? (
+					component: !isMinimise.xml.isMinimise ? (
 						<SquaredBoxWrapper
 							children={
 								<NextGenEditor
@@ -134,13 +169,17 @@ const XmlXslt = () => {
 							}
 							TopComponent={
 								<TopBoxComponent
-									onClickMinimize={onClickMinimize}
+									onClickMinimize={() =>
+										onClickMinimize(XML_INSTANT.XML)
+									}
 									title="xml"
 								/>
 							}
 						/>
 					) : (
-						<SquaredBoxWrapper>
+						<SquaredBoxWrapper
+							sx={{ border: "none", borderRadius: 4 }}
+						>
 							<Tooltip placement="bottom" title="Open xml">
 								<span>
 									<BoxFold
@@ -149,14 +188,21 @@ const XmlXslt = () => {
 											width: "60vw",
 											height: "24px",
 											cursor: "pointer",
+											backgroundColor: "#007cb9",
+											borderRadius: 1,
+											fontWeight: "bold",
+											color: "whitesmoke",
 										}}
-										onClick={onClickBoxFold}
+										onClick={() =>
+											onClickBoxFold(XML_INSTANT.XML)
+										}
+										hasClassName={false}
 									/>
 								</span>
 							</Tooltip>
 						</SquaredBoxWrapper>
 					),
-					utilNode: !isMinimise && (
+					utilNode: !isMinimise.xml.isMinimise && (
 						<XmlButton
 							onChangeXmlInstant={onChangeXmlInstant}
 							xmlContent={xmlState.text}
@@ -168,7 +214,7 @@ const XmlXslt = () => {
 					),
 				},
 				{
-					component: (
+					component: !isMinimise.xsl.isMinimise ? (
 						<SquaredBoxWrapper
 							children={
 								<NextGenEditor
@@ -179,10 +225,42 @@ const XmlXslt = () => {
 									border="none"
 								/>
 							}
-							TopComponent={<TopBoxComponent title="xsl" />}
+							TopComponent={
+								<TopBoxComponent
+									onClickMinimize={() =>
+										onClickMinimize(XML_INSTANT.XSL)
+									}
+									title="xsl"
+								/>
+							}
 						/>
+					) : (
+						<SquaredBoxWrapper
+							sx={{ border: "none", borderRadius: 4 }}
+						>
+							<Tooltip placement="bottom" title="Open xsl">
+								<span>
+									<BoxFold
+										boxLabel="xsl"
+										sx={{
+											width: "60vw",
+											height: "24px",
+											cursor: "pointer",
+											backgroundColor: "#007cb9",
+											borderRadius: 1,
+											fontWeight: "bold",
+											color: "whitesmoke",
+										}}
+										onClick={() =>
+											onClickBoxFold(XML_INSTANT.XSL)
+										}
+										hasClassName={false}
+									/>
+								</span>
+							</Tooltip>
+						</SquaredBoxWrapper>
 					),
-					utilNode: (
+					utilNode: !isMinimise.xsl.isMinimise && (
 						<XslButton
 							defaultChecked={true}
 							onChangeXslInstant={onChangeXslInstant}

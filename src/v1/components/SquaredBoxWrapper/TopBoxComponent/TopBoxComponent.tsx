@@ -1,9 +1,11 @@
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import { LiaWindowMinimize } from "react-icons/lia";
+import { VscClearAll } from "react-icons/vsc";
 interface TopBoxComponentProps {
 	title: string;
 	onClickMinimize?: (_isMinimise: boolean) => void;
+	onClickClear?: () => void;
 }
 const TopBoxComponent = (props: TopBoxComponentProps) => {
 	const onClockLiaWindowMinimize = () => {
@@ -36,6 +38,22 @@ const TopBoxComponent = (props: TopBoxComponentProps) => {
 					alignItems: "center",
 				}}
 			>
+				{props.onClickClear && (
+					<Tooltip placement="top" title="Clear all content">
+						<span>
+							<VscClearAll
+								style={{
+									width: "18px",
+									height: "18px",
+									cursor: "pointer",
+									color: "#676767",
+								}}
+								onClick={props.onClickClear}
+							/>
+						</span>
+					</Tooltip>
+				)}
+
 				<Tooltip placement="top" title="Minimize">
 					<span>
 						<LiaWindowMinimize

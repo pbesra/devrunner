@@ -8,6 +8,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import LaunchIcon from "@mui/icons-material/Launch";
+import XML_INSTANT from "@utils/constants/XmlInstants/XmlInstants";
 
 interface XslButtonProps {
 	xslContent?: string;
@@ -16,6 +17,11 @@ interface XslButtonProps {
 	defaultChecked?: boolean;
 	checked?: boolean;
 	onClickDownload?: (indentifier: string, textContent?: string) => void;
+	onClickOpenInStackBlitz?: (identifier: string) => void;
+	onClickUpload?: (
+		id: string,
+		event: React.ChangeEvent<HTMLInputElement>
+	) => void;
 }
 
 const XslButton = (props: XslButtonProps) => {
@@ -26,7 +32,11 @@ const XslButton = (props: XslButtonProps) => {
 		<Box>
 			<Box>
 				<Tooltip placement="right" title="Open in stackblitz">
-					<IconButton>
+					<IconButton
+						onClick={() =>
+							props.onClickOpenInStackBlitz?.(XML_INSTANT.XSL)
+						}
+					>
 						<LaunchIcon sx={{ fontSize: "16px" }} />
 					</IconButton>
 				</Tooltip>
@@ -64,16 +74,31 @@ const XslButton = (props: XslButtonProps) => {
 			</Box>
 			<Box>
 				<Tooltip placement="right" title="Download">
-					<IconButton onClick={() => props.onClickDownload?.("xsl")}>
+					<IconButton
+						onClick={() => props.onClickDownload?.(XML_INSTANT.XSL)}
+					>
 						<FileDownloadIcon sx={{ fontSize: "18px" }} />
 					</IconButton>
 				</Tooltip>
 			</Box>
 			<Box>
 				<Tooltip placement="right" title="Download">
-					<IconButton>
-						<FileUploadIcon sx={{ fontSize: "18px" }} />
-					</IconButton>
+					<span>
+						<input
+							type="file"
+							accept=".xml"
+							style={{ display: "none" }}
+							id={`file-upload-${XML_INSTANT.XSL}`}
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) => props.onClickUpload?.(XML_INSTANT.XSL, e)}
+						/>
+						<label htmlFor={`file-upload-${XML_INSTANT.XSL}`}>
+							<IconButton component="span">
+								<FileUploadIcon sx={{ fontSize: "18px" }} />
+							</IconButton>
+						</label>
+					</span>
 				</Tooltip>
 			</Box>
 		</Box>

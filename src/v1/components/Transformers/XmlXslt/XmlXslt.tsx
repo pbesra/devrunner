@@ -76,7 +76,6 @@ const minimiseReducer = (state: MinimiseState, action: actionProps) => {
 
 const XmlXslt = () => {
 	const coreCodeEditor = new CoreCodeEditor(new CoreStackBlitz());
-	//const [isMinimise, setIsMinimise] = useState(false);
 	const [isMinimise, minimiseDispatch] = useReducer(
 		minimiseReducer,
 		initialMinimiseState
@@ -120,15 +119,24 @@ const XmlXslt = () => {
 	const onClickBoxFold = (id: string) => {
 		minimiseDispatch({ key: id, value: false });
 	};
-	const contentMapper: { [key: string]: string } = useMemo(() => {
+	const contentMapper: { [key: string]: any } = useMemo(() => {
 		return {
-			xml: xmlState.text,
-			xsl: xslState.text,
-			result: resultState.text,
+			XML: {
+				state: xmlState,
+				onChange: onChangeXmlValue,
+			},
+			XSL: {
+				state: xslState,
+				onChange: onChangeXslValue,
+			},
+			RESULT: {
+				state: resultState,
+			},
 		};
 	}, [xmlState.text, xslState.text, resultState.text]);
+
 	const handleDownload = (identifier: string, textContent?: string) => {
-		const xmlContent = contentMapper[identifier];
+		const xmlContent = contentMapper[identifier].state.text;
 		const blob = new Blob([xmlContent], { type: "application/xml" });
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement("a");
@@ -143,12 +151,32 @@ const XmlXslt = () => {
 	};
 
 	const handleOpenInStackblitz = (identifier: string) => {
-		const content = contentMapper[identifier];
+		const content = contentMapper[identifier].state.text;
 		coreCodeEditor.handleOpenInCodeEditor(
 			content,
 			"xml",
 			`${identifier}_data`
 		);
+	};
+
+	const handleFileUpload = (
+		id: string,
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		const file = event.target.files?.[0];
+		if (!file) return;
+
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			const content = e.target?.result as string;
+			const onChangeFn = contentMapper[id].onChange;
+			onChangeFn?.(content);
+		};
+		reader.readAsText(file);
+	};
+	const onClickClear = (id: string) => {
+		const onChangeFn = contentMapper[id].onChange;
+		onChangeFn?.("");
 	};
 
 	return (
@@ -171,6 +199,9 @@ const XmlXslt = () => {
 								<TopBoxComponent
 									onClickMinimize={() =>
 										onClickMinimize(XML_INSTANT.XML)
+									}
+									onClickClear={() =>
+										onClickClear(XML_INSTANT.XML)
 									}
 									title="xml"
 								/>
@@ -210,6 +241,7 @@ const XmlXslt = () => {
 							checked={xmlInstantState.XML}
 							onClickDownload={handleDownload}
 							onClickOpenInStackBlitz={handleOpenInStackblitz}
+							onClickUpload={handleFileUpload}
 						/>
 					),
 				},
@@ -231,6 +263,9 @@ const XmlXslt = () => {
 										onClickMinimize(XML_INSTANT.XSL)
 									}
 									title="xsl"
+									onClickClear={() =>
+										onClickClear(XML_INSTANT.XSL)
+									}
 								/>
 							}
 						/>
@@ -266,6 +301,8 @@ const XmlXslt = () => {
 							onChangeXslInstant={onChangeXslInstant}
 							checked={xmlInstantState.XSL}
 							onClickDownload={handleDownload}
+							onClickOpenInStackBlitz={handleOpenInStackblitz}
+							onClickUpload={handleFileUpload}
 						/>
 					),
 				},

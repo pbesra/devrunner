@@ -2,5 +2,6 @@ const XML_INSTANT = {
 	XML: "XML",
 	XSL: "XSL",
 	CALCULATE_XSLT: "CALCULATE_XSLT",
+	RESULT: "RESULT",
 };
 export default XML_INSTANT;

@@ -9,6 +9,8 @@ import copyContent from "v1/utils/copyContent/copyContent";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import LaunchIcon from "@mui/icons-material/Launch";
+import React from "react";
+import XML_INSTANT from "@utils/constants/XmlInstants/XmlInstants";
 
 interface XmlButtonProps {
 	xmlContent?: string;
@@ -18,6 +20,10 @@ interface XmlButtonProps {
 	checked?: boolean;
 	onClickDownload?: (identifier: string, textContent?: string) => void;
 	onClickOpenInStackBlitz?: (identifier: string) => void;
+	onClickUpload?: (
+		id: string,
+		event: React.ChangeEvent<HTMLInputElement>
+	) => void;
 }
 
 const XmlButton = (props: XmlButtonProps) => {
@@ -36,7 +42,9 @@ const XmlButton = (props: XmlButtonProps) => {
 			<Box>
 				<Tooltip placement="right" title="Open in stackblitz">
 					<IconButton
-						onClick={() => props.onClickOpenInStackBlitz?.("xml")}
+						onClick={() =>
+							props.onClickOpenInStackBlitz?.(XML_INSTANT.XML)
+						}
 					>
 						<LaunchIcon sx={{ fontSize: "16px" }} />
 					</IconButton>
@@ -78,16 +86,31 @@ const XmlButton = (props: XmlButtonProps) => {
 			</Box>
 			<Box>
 				<Tooltip placement="right" title="Download">
-					<IconButton onClick={() => props.onClickDownload?.("xml")}>
+					<IconButton
+						onClick={() => props.onClickDownload?.(XML_INSTANT.XML)}
+					>
 						<FileDownloadIcon sx={{ fontSize: "18px" }} />
 					</IconButton>
 				</Tooltip>
 			</Box>
 			<Box>
-				<Tooltip placement="right" title="Download">
-					<IconButton>
-						<FileUploadIcon sx={{ fontSize: "18px" }} />
-					</IconButton>
+				<Tooltip placement="right" title="Upload">
+					<span>
+						<input
+							type="file"
+							accept=".xml"
+							style={{ display: "none" }}
+							id={`file-upload-${XML_INSTANT.XML}`}
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) => props.onClickUpload?.(XML_INSTANT.XML, e)}
+						/>
+						<label htmlFor={`file-upload-${XML_INSTANT.XML}`}>
+							<IconButton component="span">
+								<FileUploadIcon sx={{ fontSize: "18px" }} />
+							</IconButton>
+						</label>
+					</span>
 				</Tooltip>
 			</Box>
 		</Box>

@@ -48,13 +48,16 @@ const XslButton = (props: XslButtonProps) => {
 					</Tooltip>
 				</WrapperCopyContentButton>
 			</Box>
-			<Box>
-				<Tooltip placement="right" title="Expand">
-					<IconButton>
-						<ZoomOutMapIcon sx={{ fontSize: "16px" }} />
-					</IconButton>
-				</Tooltip>
-			</Box>
+			{props.onClickExpand && (
+				<Box>
+					<Tooltip placement="right" title="Expand">
+						<IconButton>
+							<ZoomOutMapIcon sx={{ fontSize: "16px" }} />
+						</IconButton>
+					</Tooltip>
+				</Box>
+			)}
+
 			<Box>
 				<Tooltip placement="right" title="xslt instant">
 					<Checkbox

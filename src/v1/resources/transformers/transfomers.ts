@@ -5,7 +5,7 @@ export type TransformerProp = {
 	label: string;
 	name: string;
 	endpoint: string;
-	component: React.ComponentType;
+	component: React.ComponentType | React.ComponentType<any>;
 };
 const transformers: TransformerProp[] = [
 	{

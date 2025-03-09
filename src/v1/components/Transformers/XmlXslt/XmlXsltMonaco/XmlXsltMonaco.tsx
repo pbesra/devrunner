@@ -1,9 +1,8 @@
 import NextGenEditor from "v1/components/NextGenEditor/NextGenEditor/NextGenEditor";
-import TransformerVWrapper from "../TransformerWrapper/TransformerVWrapper";
+
 import { useMUIXSLTTransformation } from "v1/apphooks/index"; // Import the hook
 import React, { useReducer, useCallback, useMemo } from "react";
-import XmlButton from "./XmlXsltButtons/XmlButton/XmlButton";
-import XslButton from "./XmlXsltButtons/XslButton/XslButton";
+
 import BoxWrapper from "v1/components/BoxWrapper/BoxWrapper";
 import XML_INSTANT from "@utils/constants/XmlInstants/XmlInstants";
 import SquaredBoxWrapper from "v1/components/SquaredBoxWrapper/SquaredBoxWrapper";
@@ -13,17 +12,23 @@ import { Tooltip } from "@mui/material";
 import CoreStackBlitz from "v1/core.integration/core.stackblitz/CoreStackBlitz/CoreStackBlitz";
 import CoreCodeEditor from "v1/core.integration/core-code-editor/CoreCodeEditor/CoreCodeEditor";
 import { ActionProps } from "v1/common-interfaces/common-interfaces";
-import { MinimiseState, XmlInstantReducerProps } from "./xml-interfaces";
+
 import {
 	handleOnClickMinimize,
 	handleOnDownload,
 } from "@utils/generic-funtions/generic-functions";
 import { FILE_TYPE } from "@utils/constants/FILE_TYPE";
+import { MinimiseState, XmlInstantReducerProps } from "../xml-interfaces";
 import {
 	handleOnChangeXmlInstant,
 	handleOnChangeXslInstant,
 	handleOnClickBoxFold,
-} from "./common-functions/common-functions";
+} from "../common-functions/common-functions";
+import TransformerVWrapper from "../../TransformerWrapper/TransformerVWrapper";
+import XmlButton from "../XmlXsltButtons/XmlButton/XmlButton";
+import XslButton from "../XmlXsltButtons/XslButton/XslButton";
+import { EDITOR_NAME } from "v1/components/NextGenEditor/EditorMapper/EditorMapper";
+import { APP_LANGUAGE } from "@utils/constants/APP_LANGUAGE";
 
 const xmlInstantReducer = (
 	state: XmlInstantReducerProps,
@@ -65,7 +70,7 @@ const minimiseReducer = (state: MinimiseState, action: ActionProps) => {
 	return { ...state };
 };
 
-const XmlXslt = () => {
+const XmlXsltMonaco = () => {
 	const coreCodeEditor = new CoreCodeEditor(new CoreStackBlitz());
 	const [isMinimise, minimiseDispatch] = useReducer(
 		minimiseReducer,
@@ -176,10 +181,11 @@ const XmlXslt = () => {
 							children={
 								<NextGenEditor
 									handleOnChangeInputText={onChangeXmlValue}
-									name="mui"
+									name={EDITOR_NAME.monaco}
 									value={xmlState.text}
 									border="none"
 									placeholder="Enter xml here ..."
+									language={APP_LANGUAGE.XML}
 								/>
 							}
 							TopComponent={
@@ -222,7 +228,7 @@ const XmlXslt = () => {
 					),
 					utilNode: !isMinimise.xml.isMinimise && (
 						<XmlButton
-							onChangeXmlInstant={_onChangeXslInstant}
+							onChangeXmlInstant={_onChangeXmlInstant}
 							xmlContent={xmlState.text}
 							defaultChecked={true}
 							checked={xmlInstantState.XML}
@@ -238,10 +244,11 @@ const XmlXslt = () => {
 							children={
 								<NextGenEditor
 									handleOnChangeInputText={onChangeXslValue}
-									name="mui"
+									name={EDITOR_NAME.monaco}
 									value={xslState.text}
 									placeholder="Enter xsl here ..."
 									border="none"
+									language={APP_LANGUAGE.XML}
 								/>
 							}
 							TopComponent={
@@ -285,7 +292,7 @@ const XmlXslt = () => {
 					utilNode: !isMinimise.xsl.isMinimise && (
 						<XslButton
 							defaultChecked={true}
-							onChangeXslInstant={_onChangeXmlInstant}
+							onChangeXslInstant={_onChangeXslInstant}
 							checked={xmlInstantState.XSL}
 							onClickDownload={handleDownload}
 							onClickOpenInStackBlitz={handleOpenInStackblitz}
@@ -299,14 +306,17 @@ const XmlXslt = () => {
 							onClickShowResult={onClickShowResult}
 							value={resultState.text}
 							isLoading={resultState.isLoading}
+							hasDownloadButton={true}
 						>
 							<NextGenEditor
 								readonly={true}
-								name="mui"
+								name={EDITOR_NAME.monaco}
 								value={resultState.text}
 								border="none"
 								rows={resultHeight()}
 								width="59.5vw"
+								height={resultState.isValid ? "75vh" : "40vh"}
+								language={APP_LANGUAGE.XML}
 							/>
 						</BoxWrapper>
 					),
@@ -316,4 +326,4 @@ const XmlXslt = () => {
 	);
 };
 
-export default XmlXslt;
+export default XmlXsltMonaco;

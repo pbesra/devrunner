@@ -3,6 +3,7 @@ import AppHeader from "v1/components/AppHeader/AppHeader";
 import DefaultHome from "v1/components/Home/DefaultHome";
 import transformers from "v1/resources/transformers/transfomers";
 import Box from "@mui/material/Box";
+import NotFound from "../NotFound/NotFound";
 const AppRouter = () => {
 	return (
 		<>
@@ -10,7 +11,7 @@ const AppRouter = () => {
 			<Box sx={{ margin: 1 }}>
 				<Routes>
 					<Route path="/" element={<DefaultHome />} />
-					{/* <Route path="*" element={<Home />} /> */}
+
 					{transformers.map((x) => (
 						<Route
 							key={x.name}
@@ -18,6 +19,7 @@ const AppRouter = () => {
 							element={<x.component />}
 						/>
 					))}
+					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</Box>
 		</>

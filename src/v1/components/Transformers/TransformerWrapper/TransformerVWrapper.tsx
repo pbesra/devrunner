@@ -1,7 +1,7 @@
 import { Checkbox } from "@mui/material";
 import Box from "@mui/material/Box";
 
-interface TransformerObject {
+export interface TransformerObject {
 	component: React.ReactNode;
 	utilNode?: React.ReactNode;
 }

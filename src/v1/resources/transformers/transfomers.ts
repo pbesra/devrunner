@@ -1,5 +1,9 @@
 import XmlXslt from "v1/components/Transformers/XmlXslt/XmlXslt";
 import TextCompare from "v1/components/Transformers/TextCompare/TextCompare";
+import CoreAceEditor from "v1/components/NextGenEditor/CoreAceEditor/CoreAceEditor";
+import GuidGenerator from "v1/components/Transformers/GuidGenerator/GuidGenerator";
+import MonacoEditor from "v1/components/NextGenEditor/MonacoEditor/MonacoEditor";
+import XmlXsltMonaco from "v1/components/Transformers/XmlXslt/XmlXsltMonaco/XmlXsltMonaco";
 
 export type TransformerProp = {
 	label: string;
@@ -11,7 +15,7 @@ const transformers: TransformerProp[] = [
 	{
 		name: "xmlxslt",
 		label: "Xslt transformation",
-		component: XmlXslt,
+		component: XmlXsltMonaco,
 		endpoint: "xml-xslt",
 	},
 	{
@@ -62,6 +66,12 @@ const transformers: TransformerProp[] = [
 		label: "Validate yaml",
 		component: XmlXslt,
 		endpoint: "validate-yaml",
+	},
+	{
+		name: "guildgenerator",
+		label: "Guid Generator",
+		component: GuidGenerator,
+		endpoint: "guid-generator",
 	},
 ];
 export default transformers;

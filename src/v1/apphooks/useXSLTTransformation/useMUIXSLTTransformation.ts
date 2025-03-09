@@ -1,14 +1,12 @@
 import { useEffect, useReducer } from "react";
 import parseXML from "v1/utils/parseXML/parseXML";
-import {
-	xmlInstantReducerProps,
-	actionProps,
-} from "v1/components/Transformers/XmlXslt/XmlXslt";
+import { XmlInstantReducerProps } from "v1/components/Transformers/XmlXslt/xml-interfaces";
 import XML_INSTANT from "@utils/constants/XmlInstants/XmlInstants";
 import XML_NODE_MESSAGE from "@utils/constants/xml-xslt-messages/xml-node/XmlNodeMessage";
 
 import { useSelector } from "react-redux";
 import { RootState } from "v1/appReduxStore/rootStore/rootStore";
+import { ActionProps } from "v1/common-interfaces/common-interfaces";
 
 const ContentRefOptions = {
 	XML: "XML",
@@ -16,8 +14,8 @@ const ContentRefOptions = {
 };
 
 interface UseMUIXSLTTransformationProps {
-	xmlInstant?: xmlInstantReducerProps;
-	setXmlInstant?: React.Dispatch<actionProps>;
+	xmlInstant?: XmlInstantReducerProps;
+	setXmlInstant?: React.Dispatch<ActionProps>;
 }
 
 const XmlTransformerStateConst = {

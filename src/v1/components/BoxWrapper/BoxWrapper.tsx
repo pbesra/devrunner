@@ -5,6 +5,10 @@ import Tooltip from "@mui/material/Tooltip";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import copyContent from "v1/utils/copyContent/copyContent";
 import WrapperLinearProgress from "@wrapper/WrapperLinearProgress/WrapperLinearProgress";
+import IconButton from "@mui/material/IconButton";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import { handleOnDownload } from "@utils/generic-funtions/generic-functions";
+import { FILE_TYPE } from "@utils/constants/FILE_TYPE";
 
 interface BoxWrapperProps {
 	children: React.ReactNode;
@@ -13,11 +17,15 @@ interface BoxWrapperProps {
 	value?: string;
 	onClickShowResult?: () => void;
 	isLoading?: boolean;
+	hasDownloadButton?: boolean;
 }
 
 const BoxWrapper: React.FC<BoxWrapperProps> = (props) => {
 	const onClickWrapperIconButton = () => {
 		copyContent({ source: "text", content: props.value });
+	};
+	const _handleDownload = () => {
+		handleOnDownload("xslt_result", props.value, FILE_TYPE.XML);
 	};
 	return (
 		<Box
@@ -52,14 +60,24 @@ const BoxWrapper: React.FC<BoxWrapperProps> = (props) => {
 						alignItems: "center",
 					}}
 				>
-					<WrapperCopyContentButton
-						onClickWrapperIconButton={onClickWrapperIconButton}
-						hasCopiedIcon={true}
-					>
-						<Tooltip placement="bottom" title="Copy content">
-							<ContentCopyIcon sx={{ fontSize: "16px" }} />
+					{onClickWrapperIconButton && (
+						<WrapperCopyContentButton
+							onClickWrapperIconButton={onClickWrapperIconButton}
+							hasCopiedIcon={true}
+						>
+							<Tooltip placement="bottom" title="Copy content">
+								<ContentCopyIcon sx={{ fontSize: "16px" }} />
+							</Tooltip>
+						</WrapperCopyContentButton>
+					)}
+					{props.hasDownloadButton && (
+						<Tooltip placement="bottom" title="Download">
+							<IconButton onClick={_handleDownload}>
+								<FileDownloadIcon sx={{ fontSize: "18px" }} />
+							</IconButton>
 						</Tooltip>
-					</WrapperCopyContentButton>
+					)}
+
 					<Button
 						sx={{
 							color: "#3c3c3c",

@@ -12,3 +12,8 @@ export const EditorMapper: EditorMapperProps = {
 	mui: MuiTextEditor,
 	ace: CoreAceEditor,
 };
+export const EDITOR_NAME = {
+	monaco: "monaco",
+	mui: "mui",
+	ace: "ace",
+};

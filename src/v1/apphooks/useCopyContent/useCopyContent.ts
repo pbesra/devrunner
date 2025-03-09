@@ -23,7 +23,6 @@ const useCopyContent = (props: useCopyContentProps) => {
 				await navigator.clipboard.writeText(content);
 				setIsCopyCompleted(true);
 			} catch (err) {
-				console.error("Failed to copy text: ", err);
 				setIsCopyCompleted(false);
 			}
 		} else {

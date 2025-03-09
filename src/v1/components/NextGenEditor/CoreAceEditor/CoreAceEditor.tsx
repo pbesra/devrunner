@@ -7,9 +7,7 @@ import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
 
 const CoreAceEditor = (props: NextGenEditorProps) => {
-	const onChange = (newValue: string) => {
-		console.log("change", newValue);
-	};
+	const onChange = (newValue: string) => {};
 	return (
 		<>
 			<AceEditor

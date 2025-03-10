@@ -224,7 +224,7 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 		if (props.xmlInstant?.CALCULATE_XSLT) {
 			transfomerDispatcher({
 				key: XmlTransformerStateConst.RESULT,
-				value: { message: transformedResult, isValid: true },
+				value: { message: transformedResult || "", isValid: true },
 			});
 		} else if (
 			transformedResult !== null &&

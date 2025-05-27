@@ -160,7 +160,10 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 					xml.xmlDoc,
 					document
 				);
-				return new XMLSerializer().serializeToString(resultDocument);
+				const xsltResult = new XMLSerializer().serializeToString(
+					resultDocument
+				);
+				return xsltResult;
 			}
 		} catch (error) {
 			console.error("XSLT Transformation Error:", error);
@@ -242,7 +245,12 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 		) {
 			transfomerDispatcher({
 				key: XmlTransformerStateConst.RESULT,
-				value: { message: transformedResult, isValid: true },
+				value: {
+					message: transformedResult
+						? transformedResult
+						: "No matching node found in xslt transformation.",
+					isValid: true,
+				},
 			});
 		}
 	};

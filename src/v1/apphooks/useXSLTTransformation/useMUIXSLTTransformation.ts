@@ -109,7 +109,7 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 			},
 		});
 	};
-	const xsltTransform = (xmlText: string, xslText: string): string | null => {
+	const xsltTransform = (xmlText: string, xslText: string): any => {
 		const xml = parseXML(xmlText, "xml");
 		const xsl = parseXML(xslText, "xsl");
 
@@ -163,12 +163,12 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 				const xsltResult = new XMLSerializer().serializeToString(
 					resultDocument
 				);
-				return xsltResult;
+				return { result: xsltResult, isValid: true };
 			}
 		} catch (error) {
 			console.error("XSLT Transformation Error:", error);
 		}
-		return null;
+		return { result: null, isValid: false };
 	};
 
 	const onChangeXmlValue = (xmlChangedValue: string) => {
@@ -224,10 +224,20 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 			transformerState.xmlState.text,
 			transformerState.xslState.text
 		);
+		const invalidMessage = "No matching node found in xslt transformation.";
+		const genericXMLErrorMessage = "Error in XSLT transformation.";
+		const xsltResult = transformedResult.isValid
+			? transformedResult.result.length > 0
+				? transformedResult.result
+				: invalidMessage
+			: genericXMLErrorMessage;
+		const isValidXslt = ![invalidMessage, genericXMLErrorMessage].includes(
+			xsltResult
+		);
 		if (props.xmlInstant?.CALCULATE_XSLT) {
 			transfomerDispatcher({
 				key: XmlTransformerStateConst.RESULT,
-				value: { message: transformedResult || "", isValid: true },
+				value: { message: xsltResult || "", isValid: isValidXslt },
 			});
 		} else if (
 			transformedResult !== null &&
@@ -236,7 +246,7 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 		) {
 			transfomerDispatcher({
 				key: XmlTransformerStateConst.RESULT,
-				value: { message: transformedResult, isValid: true },
+				value: { message: xsltResult, isValid: isValidXslt },
 			});
 		} else if (
 			transformedResult !== null &&
@@ -246,10 +256,8 @@ const useMUIXSLTTransformation = (props: UseMUIXSLTTransformationProps) => {
 			transfomerDispatcher({
 				key: XmlTransformerStateConst.RESULT,
 				value: {
-					message: transformedResult
-						? transformedResult
-						: "No matching node found in xslt transformation.",
-					isValid: true,
+					message: xsltResult,
+					isValid: isValidXslt,
 				},
 			});
 		}

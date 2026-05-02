@@ -15,6 +15,7 @@ const SquaredBoxWrapper: React.FC<WrapperBoxProps> = (props) => {
 				{props.RightComponent && <Box>{props.RightComponent}</Box>}
 			</Box>
 			{props.BottomComponent && <Box>{props.BottomComponent}</Box>}
+			Number of Guids
 		</Box>
 	);
 };

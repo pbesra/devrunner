@@ -4,6 +4,7 @@ import CoreAceEditor from "v1/components/NextGenEditor/CoreAceEditor/CoreAceEdit
 import GuidGenerator from "v1/components/Transformers/GuidGenerator/GuidGenerator";
 import MonacoEditor from "v1/components/NextGenEditor/MonacoEditor/MonacoEditor";
 import XmlXsltMonaco from "v1/components/Transformers/XmlXslt/XmlXsltMonaco/XmlXsltMonaco";
+import XPathEvaluator from "v1/components/Transformers/XPathEvaluator/XPathEvaluator";
 
 export type TransformerProp = {
 	label: string;
@@ -34,7 +35,7 @@ const transformers: TransformerProp[] = [
 	{
 		name: "xpath",
 		label: "X Path",
-		component: XmlXslt,
+		component: XPathEvaluator,
 		endpoint: "xpath",
 	},
 	{

@@ -41,7 +41,7 @@ const transformers: TransformerProp[] = [
 	},
 	{
 		name: "xml-to-json",
-		label: "XML to JSON And Json to XML",
+		label: "XML to JSON or Json to XML",
 		component: XmlToJson,
 		endpoint: "xml-to-json",
 	},

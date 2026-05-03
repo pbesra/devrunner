@@ -109,6 +109,10 @@ export default function XPathEvaluator() {
     });
   };
 
+  const onTextChange=(xmlInput: string)=>{
+    setXml(xmlInput);
+  }
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
 
@@ -205,6 +209,7 @@ export default function XPathEvaluator() {
                 name={EDITOR_NAME.monaco}
                 value={xml}
                 // onChange={(val: string) => setXml(val)}
+                handleOnChangeInputText={onTextChange}
                 border="none"
                 width="100%"
                 height={`calc(${PANEL_HEIGHT} - ${HEADER_HEIGHT}px)`}

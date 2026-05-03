@@ -7,6 +7,7 @@ import XmlXsltMonaco from "v1/components/Transformers/XmlXslt/XmlXsltMonaco/XmlX
 import XPathEvaluator from "v1/components/Transformers/XPathEvaluator/XPathEvaluator";
 import XmlToJson from "v1/components/Transformers/XmlToJson/XmlToJson";
 import ValidateJsonXml from "v1/components/Transformers/ValidateJsonXml/ValidateJsonXml";
+import JsonWebToken from "v1/components/Transformers/JsonWebToken/JsonWebToken";
 
 export type TransformerProp = {
 	label: string;
@@ -30,7 +31,7 @@ const transformers: TransformerProp[] = [
 	{
 		name: "json-web-token",
 		label: "JSON Web Token",
-		component: XmlXslt,
+		component: JsonWebToken,
 		endpoint: "json-web-token",
 	},
 

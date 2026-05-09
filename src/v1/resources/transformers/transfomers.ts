@@ -54,12 +54,6 @@ const transformers: TransformerProp[] = [
 		endpoint: "validate-json",
 	},
 	{
-		name: "validate-yaml",
-		label: "Validate yaml",
-		component: XmlXslt,
-		endpoint: "validate-yaml",
-	},
-	{
 		name: "guildgenerator",
 		label: "Guid Generator",
 		component: GuidGenerator,

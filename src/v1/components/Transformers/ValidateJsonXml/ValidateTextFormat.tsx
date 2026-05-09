@@ -12,12 +12,13 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import NextGenEditor from "v1/components/NextGenEditor/NextGenEditor/NextGenEditor";
 import { EDITOR_NAME } from "v1/components/NextGenEditor/EditorMapper/EditorMapper";
 import { APP_LANGUAGE } from "@utils/constants/APP_LANGUAGE";
+import * as yaml from "js-yaml";
 
 const PANEL_HEIGHT  = "75vh";
 const HEADER_HEIGHT = 36;
 
-type Mode             = "json" | "xml";
-type ValidationState  = "idle" | "valid" | "invalid";
+type Mode            = "json" | "xml" | "yaml";
+type ValidationState = "idle" | "valid" | "invalid";
 
 // ── Validators ─────────────────────────────────────────────────────────────
 
@@ -39,7 +40,6 @@ function validateXml(input: string): { state: ValidationState; error?: string } 
     const doc        = parser.parseFromString(input, "application/xml");
     const parseError = doc.querySelector("parsererror");
     if (parseError) {
-      // Extract just the meaningful line from the verbose parsererror
       const raw   = parseError.textContent ?? "Invalid XML";
       const match = raw.match(/error on line (\d+).+?:(.*)/i);
       const error = match
@@ -52,6 +52,24 @@ function validateXml(input: string): { state: ValidationState; error?: string } 
     return { state: "invalid", error: e?.message ?? "Invalid XML" };
   }
 }
+
+function validateYaml(input: string): { state: ValidationState; error?: string; lines?: number } {
+  if (!input.trim()) return { state: "idle" };
+  try {
+    const parsed = yaml.load(input);
+    const lines  = input.split("\n").length;
+    if (parsed === null || parsed === undefined) {
+      return { state: "valid", lines };
+    }
+    return { state: "valid", lines };
+  } catch (e: any) {
+    // js-yaml errors include line info in the message already
+    const msg = e?.message ?? "Invalid YAML";
+    return { state: "invalid", error: msg };
+  }
+}
+
+// ── Formatters ─────────────────────────────────────────────────────────────
 
 function formatXml(input: string): string {
   const parser     = new DOMParser();
@@ -77,25 +95,37 @@ function formatXml(input: string): string {
       if (children.length === 1 && !children[0].includes("\n")) {
         return `${pad}<${el.tagName}${attrs}>${children[0]}</${el.tagName}>`;
       }
-      return `${pad}<${el.tagName}${attrs}>\n${children.map((c) => `${"  ".repeat(indent + 1)}${c}`).join("\n")}\n${pad}</${el.tagName}>`;
+      return `${pad}<${el.tagName}${attrs}>\n${children
+        .map((c) => `${"  ".repeat(indent + 1)}${c}`)
+        .join("\n")}\n${pad}</${el.tagName}>`;
     }
     return "";
   };
 
-  const root = doc.documentElement;
-  return `<?xml version="1.0" encoding="UTF-8"?>\n${serialize(root, 0)}`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n${serialize(doc.documentElement, 0)}`;
+}
+
+function formatYaml(input: string): string {
+  // Round-trip through js-yaml to normalise indentation and quoting
+  const parsed = yaml.load(input);
+  return yaml.dump(parsed, {
+    indent: 2,
+    lineWidth: 120,
+    noRefs: true,
+  });
 }
 
 // ── Component ──────────────────────────────────────────────────────────────
 
-export default function ValidateJsonXml() {
+export default function ValidateTextFormat() {
   const [mode,       setMode]       = useState<Mode>("json");
   const [jsonInput,  setJsonInput]  = useState("");
   const [xmlInput,   setXmlInput]   = useState("");
+  const [yamlInput,  setYamlInput]  = useState("");
   const [validation, setValidation] = useState<ReturnType<typeof validateJson>>({ state: "idle" });
 
-  const input    = mode === "json" ? jsonInput : xmlInput;
-  const setInput = mode === "json" ? setJsonInput : setXmlInput;
+  const input    = mode === "json" ? jsonInput : mode === "xml" ? xmlInput : yamlInput;
+  const setInput = mode === "json" ? setJsonInput : mode === "xml" ? setXmlInput : setYamlInput;
 
   const handleModeChange = (_: React.MouseEvent, val: Mode | null) => {
     if (!val) return;
@@ -105,7 +135,9 @@ export default function ValidateJsonXml() {
 
   const validate = () => {
     if (!input.trim()) { setValidation({ state: "idle" }); return; }
-    setValidation(mode === "json" ? validateJson(input) : validateXml(input));
+    if (mode === "json") setValidation(validateJson(input));
+    else if (mode === "xml") setValidation(validateXml(input));
+    else setValidation(validateYaml(input));
   };
 
   const format = () => {
@@ -114,10 +146,14 @@ export default function ValidateJsonXml() {
         const pretty = JSON.stringify(JSON.parse(input), null, 2);
         setInput(pretty);
         setValidation({ state: "valid", lines: pretty.split("\n").length });
-      } else {
+      } else if (mode === "xml") {
         const pretty = formatXml(input);
         setInput(pretty);
         setValidation({ state: "valid" });
+      } else {
+        const pretty = formatYaml(input);
+        setInput(pretty);
+        setValidation({ state: "valid", lines: pretty.split("\n").length });
       }
     } catch (e: any) {
       setValidation({ state: "invalid", error: e?.message ?? "Format failed" });
@@ -131,14 +167,18 @@ export default function ValidateJsonXml() {
 
   const isValid   = validation.state === "valid";
   const isInvalid = validation.state === "invalid";
-  const inputLang = mode === "json" ? APP_LANGUAGE.JSON : APP_LANGUAGE.XML;
+
+  const inputLang =
+    mode === "json" ? APP_LANGUAGE.JSON :
+    mode === "xml"  ? APP_LANGUAGE.XML  :
+    APP_LANGUAGE.YAML;
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
 
       {/* ── Page header ── */}
       <Typography variant="h6" fontWeight={500} sx={{ mb: 2 }}>
-        JSON or XML Validate &amp; Format
+        JSON / XML / YAML — Validate &amp; Format
       </Typography>
 
       {/* ── Toolbar ── */}
@@ -162,12 +202,9 @@ export default function ValidateJsonXml() {
           onChange={handleModeChange}
           size="small"
         >
-          <ToggleButton value="json" sx={{ px: 2, fontSize: 12 }}>
-            JSON
-          </ToggleButton>
-          <ToggleButton value="xml" sx={{ px: 2, fontSize: 12 }}>
-            XML
-          </ToggleButton>
+          <ToggleButton value="json" sx={{ px: 2, fontSize: 12 }}>JSON</ToggleButton>
+          <ToggleButton value="xml"  sx={{ px: 2, fontSize: 12 }}>XML</ToggleButton>
+          <ToggleButton value="yaml" sx={{ px: 2, fontSize: 12 }}>YAML</ToggleButton>
         </ToggleButtonGroup>
 
         {/* Status badge */}
@@ -199,20 +236,10 @@ export default function ValidateJsonXml() {
 
         {/* Actions */}
         <Box sx={{ display: "flex", gap: 1, flexShrink: 0 }}>
-          <Button
-            variant="outlined"
-            onClick={format}
-            disabled={!input.trim()}
-            sx={{ minWidth: 80 }}
-          >
+          <Button variant="outlined" onClick={format} disabled={!input.trim()} sx={{ minWidth: 80 }}>
             Format
           </Button>
-          <Button
-            variant="contained"
-            disableElevation
-            onClick={validate}
-            sx={{ minWidth: 100 }}
-          >
+          <Button variant="contained" disableElevation onClick={validate} sx={{ minWidth: 100 }}>
             Validate
           </Button>
           <Button variant="outlined" onClick={reset} sx={{ minWidth: 80 }}>
@@ -222,10 +249,8 @@ export default function ValidateJsonXml() {
       </Paper>
 
       {/* ── Editor panel ── */}
-      <Paper
-        variant="outlined"
-        sx={{ borderRadius: 2, overflow: "hidden", minHeight: PANEL_HEIGHT }}
-      >
+      <Paper variant="outlined" sx={{ borderRadius: 2, overflow: "hidden", minHeight: PANEL_HEIGHT }}>
+
         {/* Panel header */}
         <Box
           sx={{
@@ -243,11 +268,7 @@ export default function ValidateJsonXml() {
           <Typography variant="overline" color="text.secondary">
             {mode.toUpperCase()} Input
           </Typography>
-          <Chip
-            label={mode.toUpperCase()}
-            size="small"
-            sx={{ fontSize: 10, height: 18 }}
-          />
+          <Chip label={mode.toUpperCase()} size="small" sx={{ fontSize: 10, height: 18 }} />
         </Box>
 
         {/* Error / success banner */}

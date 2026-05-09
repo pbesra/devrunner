@@ -6,7 +6,7 @@ import MonacoEditor from "v1/components/NextGenEditor/MonacoEditor/MonacoEditor"
 import XmlXsltMonaco from "v1/components/Transformers/XmlXslt/XmlXsltMonaco/XmlXsltMonaco";
 import XPathEvaluator from "v1/components/Transformers/XPathEvaluator/XPathEvaluator";
 import XmlToJson from "v1/components/Transformers/XmlToJson/XmlToJson";
-import ValidateJsonXml from "v1/components/Transformers/ValidateJsonXml/ValidateJsonXml";
+import ValidateTextFormat from "v1/components/Transformers/ValidateJsonXml/ValidateTextFormat";
 import JsonWebToken from "v1/components/Transformers/JsonWebToken/JsonWebToken";
 
 export type TransformerProp = {
@@ -49,8 +49,8 @@ const transformers: TransformerProp[] = [
 	},
 	{
 		name: "validate-json",
-		label: "Validate JSON | XML",
-		component: ValidateJsonXml,
+		label: "Validate JSON | XML YAML",
+		component: ValidateTextFormat,
 		endpoint: "validate-json",
 	},
 	{
